@@ -586,6 +586,13 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(246, 236, 226, 0.55);
 }
 
+.footer__credit {
+  margin: 1.2rem 0 0; text-align: center;
+  font-size: 11px; letter-spacing: 0.08em; color: rgba(246, 236, 226, 0.45);
+}
+.footer__credit a { color: rgba(241, 215, 155, 0.75); text-decoration: none; border-bottom: 1px solid rgba(241, 215, 155, 0.3); }
+.footer__credit a:hover { color: var(--gold-3); }
+
 /* ---------- scroll reveal ---------- */
 .js [data-reveal] {
   opacity: 0; transform: translateY(34px);

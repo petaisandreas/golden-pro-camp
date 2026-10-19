@@ -4,6 +4,7 @@
 //  - <!-- include: name -->      inserts src/partials/name.html (nested includes allowed)
 //  - {{ path.to.value }}         inserts a value from src/data/site.json
 //  - <!-- camps -->              renders the upcoming camps list from site.json
+//  - <!-- credit -->             renders the "website by" line (hidden while credit.name is empty)
 //  - src/assets/                 copied as-is
 const fs = require("fs");
 const path = require("path");
@@ -32,12 +33,25 @@ function renderCamps() {
     .join("")}</ul>`;
 }
 
+function renderCredit() {
+  const c = data.credit || {};
+  if (!c.name) return "";
+  const link = c.email ? `mailto:${c.email}?subject=${encodeURIComponent("A website like Golden Pro")}` : c.url;
+  const name = c.url
+    ? `<a href="${escapeHtml(c.url)}" target="_blank" rel="noopener">${escapeHtml(c.name)}</a>`
+    : escapeHtml(c.name);
+  return `<p class="footer__credit">Website by ${name}${
+    link ? ` &middot; <a href="${escapeHtml(link)}">Want a site like this? Get in touch</a>` : ""
+  }</p>`;
+}
+
 function render(html, depth = 0) {
   if (depth > 10) throw new Error("include depth exceeded");
   html = html.replace(/<!--\s*include:\s*([\w-]+)\s*-->/g, (_, name) =>
     render(fs.readFileSync(path.join(SRC, "partials", `${name}.html`), "utf8"), depth + 1)
   );
   html = html.replace(/<!--\s*camps\s*-->/g, renderCamps);
+  html = html.replace(/<!--\s*credit\s*-->/g, renderCredit);
   html = html.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_, key) => {
     const v = lookup(key);
     if (v === undefined) throw new Error(`Unknown data key {{ ${key} }}`);

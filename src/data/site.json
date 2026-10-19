@@ -10,6 +10,11 @@
     "whatsappLink": "https://wa.me/35700000000",
     "location": "Larnaca, Cyprus"
   },
+  "credit": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
   "camps": [
     { "name": "Golden III", "dates": "Dates announced soon", "status": "Applications open" }
   ],
