@@ -1,0 +1,31 @@
+{
+  "name": "Golden Pro",
+  "tagline": "Female Training Camp",
+  "url": "",
+  "contact": {
+    "instagram": "https://www.instagram.com/goldenprocamp/",
+    "instagramHandle": "@goldenprocamp",
+    "email": "hello@goldenprocamp.com",
+    "whatsapp": "+357 00 000 000",
+    "whatsappLink": "https://wa.me/35700000000",
+    "location": "Larnaca, Cyprus"
+  },
+  "camps": [
+    { "name": "Golden III", "dates": "Dates announced soon", "status": "Applications open" }
+  ],
+  "apply": {
+    "googleFormUrl": "",
+    "googleFormAction": "",
+    "entries": {
+      "name": "",
+      "age": "",
+      "belt": "",
+      "email": "",
+      "instagram": "",
+      "country": "",
+      "whatsapp": "",
+      "achievements": "",
+      "about": ""
+    }
+  }
+}

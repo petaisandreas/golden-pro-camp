@@ -1,0 +1,26 @@
+<footer class="footer">
+  <div class="wave wave--top"><!-- include: wave-svg --></div>
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <img src="assets/img/logo.png" alt="Golden Pro" width="683" height="820" loading="lazy">
+      <p>Women pushing women forward.</p>
+    </div>
+    <div class="camps">
+      <h3>Next camps</h3>
+      <!-- camps -->
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul class="footer__contact">
+        <li><svg><use href="#i-instagram"/></svg><a href="{{ contact.instagram }}" target="_blank" rel="noopener">{{ contact.instagramHandle }}</a></li>
+        <li><svg><use href="#i-mail"/></svg><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></li>
+        <li><svg><use href="#i-whatsapp"/></svg><a href="{{ contact.whatsappLink }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a></li>
+        <li><svg><use href="#i-pin"/></svg><span>{{ contact.location }}</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>&copy; <span data-year></span> Golden Pro &middot; Female Training Camp</span>
+    <span>Train together. Grow together.</span>
+  </div>
+</footer>
