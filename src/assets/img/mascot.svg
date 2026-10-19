@@ -14,6 +14,10 @@
       <stop offset="0" stop-color="#FFFDF8"/>
       <stop offset="1" stop-color="#E9DCCB"/>
     </linearGradient>
+    <linearGradient id="crest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D8343F"/>
+      <stop offset="1" stop-color="#8E1A26"/>
+    </linearGradient>
   </defs>
 
   <!-- back hair -->
@@ -77,8 +81,8 @@
   <path d="M148 204q12 12 24 0" fill="#8E2A33" stroke="#6E1C25" stroke-width="2" stroke-linecap="round"/>
 
   <!-- crest: upright Greek plume running front to back over the helmet -->
-  <path d="M134 108c-6-30-4-58 6-74 6-10 13-14 20-14s14 4 20 14c10 16 12 44 6 74z" fill="url(#goldDark)" stroke="#7A4E14" stroke-width="3" stroke-linejoin="round"/>
-  <g fill="none" stroke="#FBE7A1" stroke-width="2.2" stroke-linecap="round" opacity=".75">
+  <path d="M134 108c-6-30-4-58 6-74 6-10 13-14 20-14s14 4 20 14c10 16 12 44 6 74z" fill="url(#crest)" stroke="#5E1421" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#F49A97" stroke-width="2.2" stroke-linecap="round" opacity=".7">
     <path d="M160 100V26M150 100c-4-24-2-50 4-66M170 100c4-24 2-50-4-66M141 100c-3-20-2-40 3-54M179 100c3-20 2-40-3-54"/>
   </g>
 
