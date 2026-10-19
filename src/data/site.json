@@ -11,12 +11,16 @@
     "location": "Larnaca, Cyprus"
   },
   "credit": {
-    "name": "",
-    "email": "",
+    "name": "Your Name",
+    "email": "your.new.email@gmail.com",
     "url": ""
   },
   "camps": [
-    { "name": "Golden III", "dates": "Dates announced soon", "status": "Applications open" }
+    {
+      "name": "Golden III",
+      "dates": "Dates announced soon",
+      "status": "Applications open"
+    }
   ],
   "apply": {
     "googleFormUrl": "",
