@@ -104,7 +104,10 @@ def process_logo():
     rgba = rgba.crop(bbox)
     rgba.save(OUT / "logo.png", optimize=True)
     # the emblem only (diamond + ribbon), without the wordmark
-    emblem_h = int(rgba.height * 0.70)
+    # cut at the first transparent row below the emblem so the ribbon stays whole
+    solid = rgba.getchannel("A").point(lambda v: 255 if v > 40 else 0)
+    emblem_h = next(y for y in range(int(rgba.height * 0.6), rgba.height)
+                    if solid.crop((0, y, rgba.width, y + 1)).getbbox() is None)
     emblem = rgba.crop((0, 0, rgba.width, emblem_h))
     emblem = emblem.crop(emblem.getchannel("A").point(lambda v: 255 if v > 40 else 0).getbbox())
     emblem.save(OUT / "emblem.png", optimize=True)
