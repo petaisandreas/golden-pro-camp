@@ -240,30 +240,31 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
 .hero__slide {
   position: absolute; inset: 0;
   opacity: 0;
-  animation: heroFade 32s infinite;
+  transition: opacity 1.6s var(--ease);
 }
+.hero__slide.is-active { opacity: 1; }
 .hero__slide img {
   width: 100%; height: 100%; object-fit: cover;
   transform-origin: center;
-  animation: heroZoom 32s infinite linear;
+  transform: scale(1.12);
+  transition: transform 7s linear;
 }
-.hero__slide:nth-child(1), .hero__slide:nth-child(1) img { animation-delay: 0s; }
-.hero__slide:nth-child(2), .hero__slide:nth-child(2) img { animation-delay: 8s; }
-.hero__slide:nth-child(3), .hero__slide:nth-child(3) img { animation-delay: 16s; }
-.hero__slide:nth-child(4), .hero__slide:nth-child(4) img { animation-delay: 24s; }
-.hero__slide:nth-child(1) { opacity: 1; }
-@keyframes heroFade {
-  0% { opacity: 0; }
-  5% { opacity: 1; }
-  25% { opacity: 1; }
-  31% { opacity: 0; }
-  100% { opacity: 0; }
+.hero__slide.is-active img { transform: scale(1.0); }
+/* slide markers: thin gold bars that fill while a photo is showing */
+.hero__dots {
+  position: absolute; z-index: 5; right: var(--gutter); bottom: calc(var(--wave-h) + 22px);
+  display: flex; gap: 8px;
 }
-@keyframes heroZoom {
-  0% { transform: scale(1.12); }
-  31% { transform: scale(1.0); }
-  100% { transform: scale(1.0); }
+.hero__dot {
+  position: relative; width: 34px; height: 14px; padding: 0; border: 0; background: none; cursor: pointer;
 }
+.hero__dot::before, .hero__dot::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 2px; border-radius: 2px;
+}
+.hero__dot::before { background: rgba(246, 236, 226, 0.35); }
+.hero__dot::after { background: var(--gold-3); transform: scaleX(0); transform-origin: left; }
+.hero__dot.is-active::after { animation: dotFill var(--slide-ms, 5000ms) linear forwards; }
+@keyframes dotFill { to { transform: scaleX(1); } }
 .hero__shade {
   position: absolute; inset: 0; pointer-events: none;
   background:
@@ -276,17 +277,12 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   transform: translate(-30%, 0);
   text-align: center;
   opacity: 0;
-  animation: heroQuote 32s infinite;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   color: var(--cream);
 }
-.hero__slide:nth-child(1) .hero__quote { animation-delay: 0s; }
-.hero__slide:nth-child(2) .hero__quote { animation-delay: 8s; }
-.hero__slide:nth-child(3) .hero__quote { animation-delay: 16s; }
-.hero__slide:nth-child(4) .hero__quote { animation-delay: 24s; }
-@keyframes heroQuote {
-  0%, 4% { opacity: 0; transform: translate(-30%, 24px); }
-  10%, 24% { opacity: 1; transform: translate(-30%, 0); }
-  29%, 100% { opacity: 0; transform: translate(-30%, -16px); }
+.hero__slide.is-active .hero__quote {
+  opacity: 1; transform: translate(-30%, -12px);
+  transition: opacity 1.2s ease 0.5s, transform 1.6s var(--ease) 0.5s;
 }
 .hero__quote .quote { color: var(--cream); text-shadow: 0 1px 2px rgba(30, 6, 10, 0.7), 0 2px 24px rgba(30, 6, 10, 0.75); }
 .hero__quote .quote em { color: var(--gold-3); }
@@ -608,11 +604,7 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
     width: 120px; filter: drop-shadow(0 6px 18px rgba(30, 6, 10, 0.45));
   }
   .hero__quote { transform: translate(-50%, 0); }
-  @keyframes heroQuote {
-    0%, 4% { opacity: 0; transform: translate(-50%, 24px); }
-    10%, 24% { opacity: 1; transform: translate(-50%, 0); }
-    29%, 100% { opacity: 0; transform: translate(-50%, -16px); }
-  }
+  .hero__slide.is-active .hero__quote { transform: translate(-50%, -12px); }
   .hero__shade { background: linear-gradient(180deg, rgba(62, 12, 21, 0.45), rgba(62, 12, 21, 0.1) 35%, rgba(62, 12, 21, 0.3) 55%, rgba(40, 7, 13, 0.85)); }
 
   .founder__grid, .split, .mascot-grid { grid-template-columns: 1fr; }
@@ -632,7 +624,7 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .hero__slide { opacity: 0; }
-  .hero__slide:first-child { opacity: 1; }
-  .hero__slide:first-child .hero__quote { opacity: 1; }
+  /* keep the slideshow, as a gentle crossfade without the zoom */
+  .hero__slide, .hero__quote { transition-duration: 1.2s !important; }
+  .hero__slide img { transform: none !important; }
 }
