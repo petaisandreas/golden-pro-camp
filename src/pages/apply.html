@@ -9,19 +9,26 @@
   <!-- include: nav -->
 
   <header class="hero hero--page">
-    <div class="hero__slide">
-      <img src="assets/img/hero-3.jpg" alt="Three Golden athletes smiling on the mats" width="2400" height="1596" fetchpriority="high">
-      <div class="hero__shade"></div>
+    <div class="hero__head">
+      <!-- include: hero-blobs -->
+      <a class="hero__logo-link" href="index.html"><img class="hero__logo" src="assets/img/logo.png" alt="Golden Pro home" width="683" height="820"></a>
+      <div class="hero__title">
+        <h1 class="title">Apply to Golden<small>Sun &middot; Sea &middot; Jiu-Jitsu &middot; Recovery</small></h1>
+      </div>
+      <span class="hero__rule" aria-hidden="true"></span>
     </div>
-    <img class="hero__mobile-logo" src="assets/img/logo.png" alt="Golden Pro" width="683" height="820">
-    <div class="hero__title">
-      <h1 class="title">Apply to Golden<small>Sun &middot; Sea &middot; Jiu-Jitsu &middot; Recovery</small></h1>
+    <div class="hero__media">
+      <div class="hero__slide is-active">
+        <img src="assets/img/hero-3.jpg" alt="Three Golden athletes smiling on the mats" width="2400" height="1596" style="object-position: 50% 0%" fetchpriority="high">
+      </div>
+      <!-- include: hero-frame -->
     </div>
   </header>
 
   <main id="main">
     <section class="section" aria-labelledby="apply-title">
       <div class="wave wave--top"><!-- include: wave-svg --></div>
+      <div class="deco" aria-hidden="true"><div class="deco__shape deco__shape--corner deco--sm deco--tl"><!-- include: deco-corner --></div></div>
       <div class="wrap mascot-grid">
         <div class="mascot" data-reveal="left">
           <div class="mascot__bubble">See you on the mats!</div>
@@ -96,6 +103,7 @@
 
     <section class="section cta" aria-label="That is Golden">
       <div class="wave wave--top"><!-- include: wave-svg --></div>
+      <div class="deco deco--dark" aria-hidden="true"><div class="deco__shape deco__shape--corner deco--tl"><!-- include: deco-corner --></div><div class="deco__shape deco__shape--corner deco--br"><!-- include: deco-corner --></div></div>
       <div class="wrap wrap--narrow">
         <img class="cta__emblem" src="assets/img/emblem.png" alt="" width="683" height="639" loading="lazy" data-reveal="zoom">
         <p class="quote" data-reveal>Apply. Be selected. Become part of Golden.</p>

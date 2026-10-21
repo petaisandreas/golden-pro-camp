@@ -57,11 +57,21 @@
     });
     slides[0].parentElement.appendChild(dotsWrap);
 
+    // the quotes in the hero head change every second photo
+    const quotes = Array.from(document.querySelectorAll(".hero__quote"));
+
     let current = 0;
     let timer;
     function show(i) {
       current = (i + slides.length) % slides.length;
       slides.forEach((s, n) => s.classList.toggle("is-active", n === current));
+      if (quotes.length) {
+        const q = Math.floor(current / 2) % quotes.length;
+        quotes.forEach((el, n) => {
+          el.classList.toggle("is-active", n === q);
+          el.setAttribute("aria-hidden", String(n !== q));
+        });
+      }
       dots.forEach((d, n) => {
         d.classList.remove("is-active");
         if (n === current) { void d.offsetWidth; d.classList.add("is-active"); }
@@ -75,10 +85,10 @@
     restart();
   }
 
-  // ---- scroll-linked motion: hero drifts back, photos glide with the words ----
+  // ---- scroll-linked motion: hero photos drift back, head text fades away, photos glide with the words ----
   const hero = document.querySelector(".hero");
   const heroSlides = hero ? hero.querySelectorAll(".hero__slide") : [];
-  const heroText = hero ? hero.querySelectorAll(".hero__quote > *, .hero__title, .hero__scroll, .hero__dots") : [];
+  const heroText = hero ? hero.querySelectorAll(".hero__head > :not(.hero__deco)") : [];
   const parallax = Array.from(document.querySelectorAll("[data-parallax]"));
   let ticking = false;
 
@@ -86,12 +96,13 @@
     const y = window.scrollY;
     const vh = window.innerHeight;
     body.classList.toggle("is-scrolled", y > vh * 0.55);
+    body.classList.toggle("is-moved", y > 40);
 
     if (!reduceMotion) {
-      if (hero && y < vh * 1.2) {
+      if (hero && y < hero.offsetHeight + vh) {
         const p = Math.min(y / vh, 1);
-        heroSlides.forEach((s) => { s.style.transform = `translate3d(0, ${y * 0.4}px, 0)`; });
-        heroText.forEach((t) => { t.style.opacity = String(1 - p * 1.4); });
+        heroSlides.forEach((s) => { s.style.transform = `translate3d(0, ${(y * 0.12).toFixed(1)}px, 0)`; });
+        heroText.forEach((t) => { t.style.opacity = String(Math.max(0, 1 - p * 1.3)); });
       }
       for (const el of parallax) {
         const box = el.parentElement.getBoundingClientRect();
