@@ -108,7 +108,9 @@
         const box = el.parentElement.getBoundingClientRect();
         if (box.bottom < -100 || box.top > vh + 100) continue;
         const speed = parseFloat(el.dataset.parallax) || 0.15;
-        const offset = (box.top + box.height / 2 - vh / 2) * -speed;
+        let offset = (box.top + box.height / 2 - vh / 2) * -speed;
+        // feature photos sit just below their quote: only a small drift, so the photo never slides up under the words
+        if (el.parentElement.classList.contains("feature__media")) offset = Math.max(-16, Math.min(56, offset));
         el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
       }
     }
