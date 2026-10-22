@@ -43,20 +43,6 @@
   const SLIDE_MS = 5000;
   const slides = Array.from(document.querySelectorAll(".hero:not(.hero--page) .hero__slide"));
   if (slides.length > 1) {
-    const dotsWrap = document.createElement("div");
-    dotsWrap.className = "hero__dots";
-    dotsWrap.style.setProperty("--slide-ms", SLIDE_MS + "ms");
-    const dots = slides.map((_, i) => {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "hero__dot";
-      dot.setAttribute("aria-label", `Show photo ${i + 1}`);
-      dot.addEventListener("click", () => { show(i); restart(); });
-      dotsWrap.appendChild(dot);
-      return dot;
-    });
-    slides[0].parentElement.appendChild(dotsWrap);
-
     // the quotes in the hero head change every second photo
     const quotes = Array.from(document.querySelectorAll(".hero__quote"));
 
@@ -72,17 +58,9 @@
           el.setAttribute("aria-hidden", String(n !== q));
         });
       }
-      dots.forEach((d, n) => {
-        d.classList.remove("is-active");
-        if (n === current) { void d.offsetWidth; d.classList.add("is-active"); }
-      });
-    }
-    function restart() {
-      clearInterval(timer);
-      timer = setInterval(() => show(current + 1), SLIDE_MS);
     }
     show(0);
-    restart();
+    timer = setInterval(() => show(current + 1), SLIDE_MS);
   }
 
   // ---- scroll-linked motion: hero photos drift back, head text fades away, photos glide with the words ----
