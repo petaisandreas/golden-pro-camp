@@ -16,6 +16,9 @@ const data = JSON.parse(fs.readFileSync(path.join(SRC, "data", "site.json"), "ut
 const escapeHtml = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// footer heading matches the number of camps listed
+data.campsHeading = (data.camps || []).filter((c) => c.show !== false).length === 1 ? "Next camp" : "Next camps";
+
 const lookup = (key) => key.split(".").reduce((o, k) => (o == null ? o : o[k]), data);
 
 function renderCamps() {

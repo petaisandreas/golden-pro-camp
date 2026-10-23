@@ -87,7 +87,7 @@ p { margin: 0 0 1.15em; }
   font-family: var(--serif);
   font-style: italic;
   font-size: 18px;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 .quote__by::before {
   content: ""; display: block; width: 1px; height: 26px;
@@ -183,7 +183,7 @@ p { margin: 0 0 1.15em; }
   background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease);
 }
 .sidenav__list a:hover::after, .sidenav__list a[aria-current="page"]::after { transform: scaleX(1); }
-.sidenav__list a:hover, .sidenav__list a[aria-current="page"] { color: var(--gold); }
+.sidenav__list a:hover, .sidenav__list a[aria-current="page"] { color: var(--gold-text); }
 .sidenav__social { margin-top: 22px; display: flex; gap: 14px; }
 .sidenav__social a { color: var(--burgundy); transition: color 0.3s; }
 .sidenav__social a:hover { color: var(--gold); }
@@ -241,7 +241,7 @@ body.menu-open .overlay { clip-path: circle(150% at calc(100% - 44px) 44px); }
   color: var(--burgundy); text-decoration: none;
   transform: translateY(110%); transition: transform 0.7s var(--ease), color 0.3s;
 }
-.overlay__list a:hover, .overlay__list a[aria-current="page"] { color: var(--gold); }
+.overlay__list a:hover, .overlay__list a[aria-current="page"] { color: var(--gold-text); }
 body.menu-open .overlay__list a { transform: none; }
 body.menu-open .overlay__list li:nth-child(2) a { transition-delay: 0.06s; }
 body.menu-open .overlay__list li:nth-child(3) a { transition-delay: 0.12s; }
@@ -393,7 +393,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   stroke-dasharray: 2200; stroke-dashoffset: 2200;
   transition: stroke-dashoffset 2.6s var(--ease);
 }
-.wave.is-in .wave__line, .no-js .wave__line { stroke-dashoffset: 0; }
+.wave.is-in .wave__line, html:not(.js) .wave__line { stroke-dashoffset: 0; }
 
 /* ---------- organic edge shapes (the mockup's blush/rose forms bleeding in from the page edges) ---------- */
 /* every deco layer fades out (no straight cut) before the section's top melt and its foot divider,
@@ -540,6 +540,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .feature--dark .text { color: rgba(242, 230, 220, 0.84); }
 .feature--dark .text strong { color: var(--gold-3); }
 .feature--dark .headline { color: var(--gold-3); }
+.feature--dark .eyebrow { color: var(--gold-2); }
 
 /* photos melt into the page colour at every edge, like Eleftheria's portrait */
 .inset-photo img, .split__media img {
@@ -558,9 +559,9 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   text-align: center; margin: 3.4rem auto;
   font-family: var(--serif); font-style: italic; font-weight: 500;
   font-size: clamp(30px, 4vw, 50px); line-height: 1.1;
-  color: var(--gold-3);
+  color: var(--burgundy);
 }
-.feature:not(.feature--dark) .statement { color: var(--burgundy); }
+.feature--dark .statement { color: var(--gold-3); }
 
 /* ---------- golden community ---------- */
 .community__head { text-align: center; margin-bottom: clamp(40px, 6vw, 80px); }
@@ -667,14 +668,14 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .field input, .field select, .field textarea {
   font: inherit; font-size: 15px; color: var(--ink);
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(169, 124, 79, 0.55);
+  border: 1px solid var(--gold-text);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.85);
   transition: border-color 0.3s, box-shadow 0.3s;
   width: 100%;
 }
 .field textarea { min-height: 130px; resize: vertical; }
-.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--burgundy); box-shadow: 0 0 0 4px rgba(92, 18, 25, 0.12); }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--burgundy); outline-offset: 2px; border-color: var(--burgundy); }
 .form__actions { text-align: center; margin-top: 2rem; }
 .form__status { margin: 1.2rem 0 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--burgundy); min-height: 1.2em; }
 .form.is-sent .form__grid, .form.is-sent .form__actions { display: none; }
@@ -710,9 +711,9 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 
 .footer__credit {
   margin: 1.2rem 0 0; text-align: center;
-  font-size: 11px; letter-spacing: 0.08em; color: rgba(242, 230, 220, 0.45);
+  font-size: 12px; letter-spacing: 0.08em; color: rgba(242, 230, 220, 0.72);
 }
-.footer__credit a { color: rgba(236, 211, 171, 0.75); text-decoration: none; border-bottom: 1px solid rgba(236, 211, 171, 0.3); }
+.footer__credit a { color: var(--gold-3); text-decoration: none; border-bottom: 1px solid rgba(236, 211, 171, 0.3); }
 .footer__credit a:hover { color: var(--gold-3); }
 
 /* ---------- scroll reveal ---------- */

@@ -38,6 +38,8 @@
   } else {
     revealables.forEach((el) => el.classList.add("is-in"));
   }
+  // tells the safety net in head.html that hidden content will be revealed
+  window.goldenReady = true;
 
   // ---- hero slideshow: crossfade to the next photo every few seconds ----
   const SLIDE_MS = 5000;
