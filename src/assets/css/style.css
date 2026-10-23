@@ -494,15 +494,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 }
 .founder__words { padding-top: 2vh; }
 .founder__emblem { width: 72px; margin-bottom: 1.4rem; }
-.achievements {
-  list-style: none; margin: 1.6rem 0 2.6rem; padding: 0;
-  display: grid; gap: 0.9rem;
-}
-.achievements li {
-  display: flex; align-items: center; gap: 1rem;
-  font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--burgundy);
-}
-.achievements svg { flex: none; width: 34px; height: 34px; color: var(--gold); }
+.founder__words .title { margin-bottom: 2.2rem; }
 .founder__interlude {
   margin: 2.6rem 0;
   padding: 1.6rem 0 1.6rem 1.6rem;
