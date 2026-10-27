@@ -373,10 +373,8 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   /* paper into wine (and back) passes through the mockup's blush and deep rose, never a grey mid-tone */
   background: linear-gradient(180deg, var(--from, var(--cream)) 0%, var(--via1, var(--from, var(--cream))) 34%, var(--via2, var(--bg)) 66%, var(--bg) 100%);
 }
-.feature--dark > .wave--top { --via1: var(--blush); --via2: var(--rose-deep); }
 .wave .hair { position: absolute; left: 0; top: 30%; width: 100%; height: 40%; overflow: visible; }
 .wave .hair .wave__line { stroke: url(#g-hair); stroke-width: 1.2; }
-.feature--dark + .section .wave--top { --from: var(--burgundy-2); --via1: var(--rose-deep); --via2: var(--blush); }
 /* the hero's own organic bottom edge is the divider into the first section */
 .hero + main > :first-child > .wave--top { display: none; }
 
@@ -504,7 +502,6 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 
 /* ---------- image + quote feature (right environment / not about the show) ---------- */
 .feature { --bg: var(--cream); position: relative; background: var(--bg); z-index: 2; }
-.feature--dark { --bg: var(--burgundy-2); }
 /* the quote sits on paper above the photo (never over faces); the photo, shown nearly whole,
    melts into the page colour at top and bottom like the banners */
 .feature__media {
@@ -525,14 +522,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   text-align: center; padding: clamp(70px, 10vw, 140px) var(--gutter) clamp(8px, 1.6vw, 24px);
 }
 .feature__quote .quote { max-width: 16em; margin: 0 auto; }
-.feature--dark .feature__quote .quote { color: var(--cream); }
-.feature--dark .feature__quote .quote em { color: var(--gold-3); }
 .feature__body { position: relative; z-index: 2; padding: 0 var(--gutter) calc(var(--wave-h) + clamp(28px, 4vw, 56px)); margin-top: -4vh; }
-.feature--dark .feature__body { color: var(--cream-2); }
-.feature--dark .text { color: rgba(242, 230, 220, 0.84); }
-.feature--dark .text strong { color: var(--gold-3); }
-.feature--dark .headline { color: var(--gold-3); }
-.feature--dark .eyebrow { color: var(--gold-2); }
 
 /* photos melt into the page colour at every edge, like Eleftheria's portrait */
 .inset-photo img, .split__media img {
@@ -553,7 +543,6 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   font-size: clamp(30px, 4vw, 50px); line-height: 1.1;
   color: var(--burgundy);
 }
-.feature--dark .statement { color: var(--gold-3); }
 
 /* ---------- golden community ---------- */
 .community__head { text-align: center; margin-bottom: clamp(40px, 6vw, 80px); }
