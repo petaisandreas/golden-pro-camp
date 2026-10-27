@@ -20,15 +20,44 @@
   // ---- floating menu ----
   const menuBtn = document.querySelector(".menu-btn");
   const overlay = document.getElementById("overlay-menu");
+  const menuLinks = Array.from(overlay.querySelectorAll("a"));
+  const isOpen = () => body.classList.contains("menu-open");
+  let lockedY = 0;
+  overlay.inert = true; // closed menu is out of the tab order and hidden from screen readers
   function setMenu(open) {
+    if (open === isOpen()) return;
+    if (open) {
+      // pin the page where it is (overflow:hidden alone doesn't stop scrolling on iOS)
+      lockedY = window.scrollY;
+      body.style.top = `-${lockedY}px`;
+    }
     body.classList.toggle("menu-open", open);
     menuBtn.setAttribute("aria-expanded", String(open));
     menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     overlay.setAttribute("aria-hidden", String(!open));
+    overlay.inert = !open;
+    if (open) {
+      menuLinks[0].focus({ preventScroll: true });
+    } else {
+      body.style.top = "";
+      window.scrollTo({ top: lockedY, behavior: "instant" });
+      if (overlay.contains(document.activeElement) || document.activeElement === body) menuBtn.focus({ preventScroll: true });
+    }
   }
-  menuBtn.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
+  menuBtn.addEventListener("click", () => setMenu(!isOpen()));
   overlay.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  document.addEventListener("keydown", (e) => {
+    if (!isOpen()) return;
+    if (e.key === "Escape") { setMenu(false); return; }
+    if (e.key === "Tab") {
+      // keep focus cycling between the close button and the menu links
+      const loop = [menuBtn, ...menuLinks];
+      const i = loop.indexOf(document.activeElement);
+      const next = e.shiftKey ? (i <= 0 ? loop.length - 1 : i - 1) : (i === loop.length - 1 ? 0 : i + 1);
+      e.preventDefault();
+      loop[next].focus();
+    }
+  });
 
   // ---- reveal on scroll (text, photos, gold wave lines) ----
   const revealables = document.querySelectorAll("[data-reveal], .wave");
@@ -81,6 +110,7 @@
   let ticking = false;
 
   function onScroll() {
+    if (isOpen()) { ticking = false; return; } // the page is pinned while the menu is open
     const y = window.scrollY;
     const vh = window.innerHeight;
     body.classList.toggle("is-scrolled", y > vh * 0.55);

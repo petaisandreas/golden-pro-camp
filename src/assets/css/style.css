@@ -12,6 +12,8 @@
   --burgundy-2: #4a1218;
   --burgundy-3: #320b0f;
   --wine-mid: #6e1f26;
+  --brick: #8a4c4e;
+  --brick-deep: #7e4244;
   --ink: #3d1a1d;
   --ink-soft: #5d4446;
   --gold: #a97c4f;
@@ -32,7 +34,7 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--cream) radial-gradient(140% 60% at 50% 0%, #f5ebe2 0%, var(--cream) 50%, var(--paper-shade) 100%) no-repeat;
@@ -201,9 +203,9 @@ p { margin: 0 0 1.15em; }
   transition: opacity 0.45s var(--ease), transform 0.45s var(--ease), background 0.45s var(--ease), border-color 0.45s var(--ease), box-shadow 0.45s var(--ease);
 }
 .menu-btn span, .menu-btn span::before, .menu-btn span::after {
-  display: block; width: 26px; height: 1.2px; background: var(--burgundy); position: relative; transition: transform 0.4s var(--ease), background 0.2s;
+  display: block; width: 26px; height: 1.5px; border-radius: 1px; background: var(--burgundy); position: relative; transition: background 0.15s linear 0.15s;
 }
-.menu-btn span::before, .menu-btn span::after { content: ""; position: absolute; left: 0; }
+.menu-btn span::before, .menu-btn span::after { content: ""; position: absolute; left: 0; transition: top 0.2s var(--ease) 0.2s, transform 0.2s var(--ease); }
 .menu-btn span::before { top: -8px; }
 .menu-btn span::after { top: 8px; }
 body.is-scrolled .menu-btn, body.menu-open .menu-btn { opacity: 1; transform: none; pointer-events: auto; }
@@ -214,20 +216,23 @@ body.is-moved:not(.menu-open) .menu-btn {
   backdrop-filter: blur(6px);
 }
 .menu-btn:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
-body.menu-open .menu-btn span { background: transparent; }
-body.menu-open .menu-btn span::before { transform: translateY(8px) rotate(45deg); }
-body.menu-open .menu-btn span::after { transform: translateY(-8px) rotate(-45deg); }
+body.menu-open .menu-btn span { background: transparent; transition-delay: 0s; }
+body.menu-open .menu-btn span::before,
+body.menu-open .menu-btn span::after { top: 0; transition: top 0.2s var(--ease), transform 0.2s var(--ease) 0.2s; }
+body.menu-open .menu-btn span::before { transform: rotate(45deg); }
+body.menu-open .menu-btn span::after { transform: rotate(-45deg); }
 
 .overlay {
   position: fixed; inset: 0; z-index: 55;
   background: var(--cream);
   display: grid; place-items: center;
   clip-path: circle(0 at calc(100% - 44px) 44px);
-  transition: clip-path 0.8s var(--ease);
-  overflow: auto;
+  visibility: hidden;
+  transition: clip-path 0.8s var(--ease), visibility 0s linear 0.8s;
+  overflow: auto; overscroll-behavior: contain;
 }
-body.menu-open { overflow: hidden; }
-body.menu-open .overlay { clip-path: circle(150% at calc(100% - 44px) 44px); }
+body.menu-open { position: fixed; left: 0; right: 0; overflow: hidden; }
+body.menu-open .overlay { clip-path: circle(150% at calc(100% - 44px) 44px); visibility: visible; transition: clip-path 0.8s var(--ease), visibility 0s; }
 .overlay__waves { position: absolute; inset: auto 0 0 0; height: 32vh; pointer-events: none; }
 .overlay__waves svg { width: 100%; height: 100%; }
 .overlay__inner { position: relative; text-align: center; padding: 90px 24px 34vh; }
@@ -247,6 +252,13 @@ body.menu-open .overlay__list li:nth-child(2) a { transition-delay: 0.06s; }
 body.menu-open .overlay__list li:nth-child(3) a { transition-delay: 0.12s; }
 body.menu-open .overlay__list li:nth-child(4) a { transition-delay: 0.18s; }
 body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
+/* phones on their side: a short screen, so a slimmer wave and smaller links keep everything above it */
+@media (max-height: 500px) {
+  .overlay__waves { height: 12vh; }
+  .overlay__inner { padding: 44px 24px 13vh; }
+  .overlay__inner img { width: 52px; margin-bottom: 0.4rem; }
+  .overlay__list a { font-size: 24px; line-height: 1.15; }
+}
 
 /* ---------- hero (client mockup: cream head with blobs, logo + quote, then a wave-framed crossfading slideshow) ---------- */
 .hero {
@@ -478,17 +490,21 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* she melts into the paper on every side: a soft oval feather intersected with edge fades,
    so the mask is fully transparent at all four box edges (no framed rectangle at any width) */
 .founder__portrait {
-  --pm-oval: radial-gradient(ellipse 60% 64% at 50% 38%, #000 52%, transparent 100%);
-  --pm-y: linear-gradient(180deg, transparent 0%, #000 9%, #000 64%, transparent 96%);
+  --pm-drop: 6%;
+  --pm-oval: radial-gradient(ellipse 62% 72% at 50% 44%, #000 56%, transparent 100%);
+  --pm-y: linear-gradient(180deg, transparent 6.5%, #000 14%, #000 66%, transparent 96%);
   --pm-x: linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
   z-index: 1; /* above the section's decorative shapes (it is sticky, so already positioned) */
-}
-.founder__portrait img {
-  width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%;
+  /* the mask sits on the frame and the photo is lowered inside it, so the soft top edge
+     fades out empty paper above her hair instead of her head */
   -webkit-mask-image: var(--pm-oval), var(--pm-y), var(--pm-x);
   -webkit-mask-composite: source-in, source-in;
   mask-image: var(--pm-oval), var(--pm-y), var(--pm-x);
   mask-composite: intersect;
+}
+.founder__portrait img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%;
+  transform: translateY(var(--pm-drop, 12%));
 }
 .founder__words { padding-top: 2vh; }
 .founder__emblem { width: 72px; margin-bottom: 1.4rem; }
@@ -584,7 +600,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .mantra li::before { content: "✦"; color: var(--gold); font-style: normal; font-size: 12px; margin-right: 0.6rem; vertical-align: middle; }
 
 /* ---------- call to action band ---------- */
-.cta { --bg: var(--burgundy-2); text-align: center; color: var(--cream); }
+.cta { --bg: var(--brick); text-align: center; color: var(--cream); }
 .cta .quote { color: var(--cream); }
 .cta .quote em { color: var(--gold-3); }
 .cta__emblem { width: 110px; margin: 0 auto 1.8rem; }
@@ -663,10 +679,10 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 
 /* ---------- footer ---------- */
 .footer {
-  --bg: var(--burgundy-3);
+  --bg: var(--brick-deep);
   position: relative; z-index: 2;
   background: var(--bg);
-  color: rgba(242, 230, 220, 0.8);
+  color: var(--cream);
   padding: clamp(50px, 7vw, 90px) var(--gutter) 34px;
   font-size: 14px;
 }
@@ -675,24 +691,24 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .footer__grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 3rem; max-width: 1180px; margin: 0 auto; align-items: start; }
 .footer__brand img { width: 150px; margin-bottom: 1rem; }
 .footer__brand p { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--cream); line-height: 1.3; }
-.footer h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-2); margin: 0.4rem 0 1.2rem; }
+.footer h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-3); margin: 0.4rem 0 1.2rem; }
 .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
 .footer__contact li { display: flex; gap: 0.7rem; align-items: center; }
-.footer__contact svg { width: 16px; height: 16px; color: var(--gold-2); flex: none; }
+.footer__contact svg { width: 16px; height: 16px; color: var(--gold-3); flex: none; }
 .camps__item { display: grid; gap: 0.1rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(207, 164, 122, 0.2); }
 .camps__name { font-family: var(--serif); font-style: italic; font-size: 21px; color: var(--cream); }
 .camps__dates { letter-spacing: 0.06em; }
-.camps__status { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-2); }
+.camps__status { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-3); }
 .footer__bottom {
   max-width: 1180px; margin: 3rem auto 0; padding-top: 1.4rem;
   border-top: 1px solid rgba(207, 164, 122, 0.25);
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242, 230, 220, 0.55);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242, 230, 220, 0.9);
 }
 
 .footer__credit {
   margin: 1.2rem 0 0; text-align: center;
-  font-size: 12px; letter-spacing: 0.08em; color: rgba(242, 230, 220, 0.72);
+  font-size: 12px; letter-spacing: 0.08em; color: rgba(242, 230, 220, 0.9);
 }
 .footer__credit a { color: var(--gold-3); text-decoration: none; border-bottom: 1px solid rgba(236, 211, 171, 0.3); }
 .footer__credit a:hover { color: var(--gold-3); }
@@ -716,11 +732,12 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   .founder__grid, .split, .mascot-grid { grid-template-columns: 1fr; }
   .founder__portrait { position: relative; height: auto; margin: calc(clamp(60px, 9vw, 120px) * -1) calc(var(--gutter) * -1) 0; }
   .founder__portrait {
-    --pm-oval: radial-gradient(ellipse 80% 70% at 50% 40%, #000 62%, transparent 100%);
-    --pm-y: linear-gradient(180deg, transparent 0%, #000 7%, #000 70%, transparent 98%);
+    --pm-drop: 5%;
+    --pm-oval: radial-gradient(ellipse 80% 74% at 50% 44%, #000 64%, transparent 100%);
+    --pm-y: linear-gradient(180deg, transparent 5.5%, #000 12%, #000 70%, transparent 98%);
     --pm-x: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
   }
-  .founder__portrait img { height: auto; aspect-ratio: 5 / 8; object-position: 50% 10%; }
+  .founder__portrait img { height: auto; aspect-ratio: 5 / 8; object-position: 50% 0%; }
   .founder__words { text-align: left; margin-top: -14vw; position: relative; }
   .split--reverse .split__media { order: 0; }
   .split__media { width: 100%; aspect-ratio: 4 / 3; margin: 0 auto; }
