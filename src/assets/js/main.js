@@ -5,6 +5,14 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const body = document.body;
 
+  // ---- every page opens at its top (links with #section still jump there) ----
+  // Browsers otherwise restore the old scroll position on reload, back/forward
+  // and in some embedded previews, landing visitors mid-page.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const toTop = () => { if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: "instant" }); };
+  toTop();
+  window.addEventListener("pageshow", (e) => { if (e.persisted) toTop(); });
+
   // ---- current page in menus ----
   const page = body.dataset.page;
   document.querySelectorAll(`[data-nav="${page}"]`).forEach((a) => a.setAttribute("aria-current", "page"));
