@@ -605,23 +605,36 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
   gap: clamp(28px, 6vw, 90px); align-items: start;
 }
-.mascot {
-  position: sticky; top: 12vh;
-  text-align: center;
+/* Athena from the logo as a soft sepia painting that seems alive: she breathes very slowly,
+   the sun behind her glows and a soft light passes over her now and then */
+.athena {
+  position: sticky; top: 10vh; margin: 0;
+  display: grid; place-items: center;
+  isolation: isolate;
 }
-.mascot img { width: min(100%, 340px); margin: 0 auto; animation: bob 4.5s ease-in-out infinite; filter: drop-shadow(0 26px 30px rgba(50, 11, 15, 0.25)); }
-.mascot__bubble {
-  position: relative; display: inline-block; margin-bottom: 1.2rem;
-  padding: 0.9rem 1.4rem; border-radius: 22px;
-  background: var(--burgundy); color: var(--cream);
-  font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.2;
+.athena img {
+  width: min(100%, 400px); height: auto; display: block;
+  animation: athenaBreathe 9s ease-in-out infinite;
+  transform-origin: 50% 70%;
 }
-.mascot__bubble::after {
-  content: ""; position: absolute; left: 50%; bottom: -10px; width: 20px; height: 20px;
-  background: var(--burgundy); transform: translateX(-50%) rotate(45deg); border-radius: 3px;
+.athena__glow {
+  position: absolute; z-index: -1; left: 58%; top: 32%; width: 62%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(236, 211, 171, 0.75) 0%, rgba(236, 211, 171, 0.25) 40%, transparent 70%);
+  animation: athenaGlow 7s ease-in-out infinite;
 }
-.mascot__name { margin-top: 0.6rem; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-text); }
-@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
+.athena__light {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 248, 232, 0.55) 50%, transparent 65%);
+  background-size: 300% 100%; background-position: 140% 0;
+  -webkit-mask: url("../img/athena.webp") center / min(100%, 400px) auto no-repeat;
+  mask: url("../img/athena.webp") center / min(100%, 400px) auto no-repeat;
+  mix-blend-mode: soft-light;
+  animation: athenaLight 11s ease-in-out infinite 2s;
+}
+@keyframes athenaBreathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.012); } }
+@keyframes athenaGlow { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.94); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+@keyframes athenaLight { 0%, 55% { background-position: 140% 0; } 85%, 100% { background-position: -40% 0; } }
 
 .steps { list-style: none; margin: 2.6rem 0; padding: 0; display: grid; gap: 1.2rem; counter-reset: step; }
 .steps li {
@@ -736,8 +749,9 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   .founder__words { text-align: left; margin-top: -14vw; position: relative; }
   .split--reverse .split__media { order: 0; }
   .split__media { width: 100%; aspect-ratio: 4 / 3; margin: 0 auto; }
-  .mascot { position: relative; top: 0; }
-  .mascot img { width: min(70%, 260px); }
+  .athena { position: relative; top: 0; }
+  .athena img { width: min(72%, 300px); }
+  .athena__light { -webkit-mask-size: min(72%, 300px) auto; mask-size: min(72%, 300px) auto; }
   .inset-photo { float: none; width: min(100%, 420px); margin: 0 auto 1.6rem; }
   .inset-photo img { aspect-ratio: 3 / 4; }
   /* features on phones: a taller box so the faces stay big, and no parallax */
