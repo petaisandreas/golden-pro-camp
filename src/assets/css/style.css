@@ -136,10 +136,6 @@ p { margin: 0 0 1.15em; }
 .two-col { columns: 2 22rem; column-gap: 4rem; }
 .two-col > * { break-inside: avoid; }
 
-.divider {
-  display: block; width: 1px; height: 46px; margin: 2rem auto;
-  background: linear-gradient(var(--gold), transparent);
-}
 .lotus { width: 54px; height: auto; margin: 0 auto 1.4rem; color: var(--gold); }
 
 /* ---------- buttons ---------- */
@@ -297,7 +293,6 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   font-family: var(--sans); font-weight: 500; font-size: 11px; line-height: 1.4;
   letter-spacing: 0.42em; text-transform: uppercase; color: var(--burgundy);
 }
-.hero__rule { display: block; width: 1px; height: clamp(30px, 4.5vh, 48px); margin: 1.2rem auto; background: var(--gold); }
 .hero__quotes { display: grid; width: min(100%, 36rem); }
 .hero__quote {
   grid-area: 1 / 1; margin: 0;
