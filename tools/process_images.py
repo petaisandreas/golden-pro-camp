@@ -75,6 +75,22 @@ def sepia(im: Image.Image) -> Image.Image:
     return ImageOps.colorize(g, black=DARK, mid=MID, white=LIGHT)
 
 
+def add_headroom(im: Image.Image, frac: float = 0.16) -> Image.Image:
+    """Her hair touches the top of the poster crop; extend the plain backdrop upward so the
+    page's soft top fade lands on empty background instead of her head."""
+    w, h = im.size
+    pad = int(h * frac)
+    strip = im.crop((0, 0, w, 12)).resize((w, 1), Image.BOX)  # backdrop colour per column
+    top = strip.resize((w, pad), Image.BICUBIC).filter(ImageFilter.GaussianBlur(24))
+    out = Image.new("RGB", (w, h + pad))
+    out.paste(top, (0, 0))
+    out.paste(im, (0, pad))
+    # soften the join so no seam shows
+    band = out.crop((0, pad - 30, w, pad + 30)).filter(ImageFilter.GaussianBlur(10))
+    out.paste(band, (0, pad - 30))
+    return out
+
+
 def process_photos():
     for name, (src, crop, max_w) in PHOTOS.items():
         im = Image.open(RAW / src).convert("RGB")
@@ -85,6 +101,8 @@ def process_photos():
         if crop:
             w, h = im.size
             im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
+        if name == "eleftheria":
+            im = add_headroom(im)
         if im.width > max_w:
             im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
         sepia(im).save(OUT / f"{name}.jpg", quality=80, optimize=True, progressive=True)
