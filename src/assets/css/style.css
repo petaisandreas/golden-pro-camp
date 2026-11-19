@@ -568,11 +568,14 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .feature__quote .quote { max-width: 16em; margin: 0 auto; }
 .feature__body { position: relative; z-index: 2; padding: 0 var(--gutter) calc(var(--wave-h) + clamp(28px, 4vw, 56px)); margin-top: -4vh; }
 
-/* photos melt into the page colour at every edge, like Eleftheria's portrait */
+/* photos melt into the page like "the right environment" photo: a long, smooth fade at top and
+   bottom; on desktop only a whisper of softening at the sides (on phones they run edge to edge) */
 .inset-photo img, .split__media img {
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 86%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  --fade-y: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
+  --fade-x: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-image: var(--fade-y), var(--fade-x);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 86%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: var(--fade-y), var(--fade-x);
   mask-composite: intersect;
 }
 .inset-photo {
@@ -774,12 +777,14 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   .founder__portrait img { height: auto; aspect-ratio: 5 / 8; object-position: 50% 0%; }
   .founder__words { text-align: left; margin-top: -14vw; position: relative; }
   .split--reverse .split__media { order: 0; }
-  .split__media { width: 100%; aspect-ratio: 4 / 3; margin: 0 auto; }
+  .split__media { width: 100vw; aspect-ratio: 4 / 3; margin: 0 0 0 calc(50% - 50vw); }
+  .split__media .flow { display: none; }
+  .inset-photo img, .split__media img { --fade-x: linear-gradient(#000, #000); }
   .athena { position: relative; top: 0; }
   .athena img { width: min(72%, 300px); }
   .athena__light { -webkit-mask-size: min(72%, 300px) auto; mask-size: min(72%, 300px) auto; }
-  .inset-photo { float: none; width: min(100%, 420px); margin: 0 auto 1.6rem; }
-  .inset-photo img { aspect-ratio: 3 / 4; }
+  .inset-photo { float: none; width: 100vw; margin: 0.6rem 0 1.6rem calc(50% - 50vw); }
+  .inset-photo img { aspect-ratio: 4 / 5; }
   /* features on phones: a taller box so the faces stay big, and no parallax */
   .feature__quote { padding: clamp(48px, 10vw, 80px) var(--gutter) 0.6rem; }
   .feature__media img { aspect-ratio: 5 / 4; transform: none !important; }
