@@ -161,21 +161,29 @@ p { margin: 0 0 1.15em; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2.4rem; }
 
 /* ---------- navigation (idoportal-style vertical list, top left) ---------- */
-/* the menu stays on the left the whole way down; once the page moves, a soft paper card sits
-   behind it so it stays readable over photos and the red bands */
+/* full list at the top of the page; on scroll the links fold away one by one (bottom first)
+   and a three-line button draws itself in their place (see .menu-btn) */
 .sidenav {
   position: fixed; top: 0; left: 0; z-index: 50;
   padding: 34px var(--gutter);
   display: flex; flex-direction: column; align-items: flex-start;
-  border-radius: 0 0 22px 0;
-  transition: background 0.45s var(--ease), box-shadow 0.45s var(--ease), padding 0.45s var(--ease);
 }
-body.is-moved .sidenav {
-  padding: 18px 26px 20px var(--gutter);
-  background: rgba(242, 230, 220, 0.92);
-  box-shadow: 0 10px 30px -12px rgba(50, 11, 15, 0.28);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+.sidenav__list li, .sidenav__social {
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+  transition-delay: calc(var(--i, 0) * 0.05s + 0.2s); /* unfold top first, after the button has gone */
 }
+.sidenav__list li:nth-child(1) { --i: 0; --f: 5; }
+.sidenav__list li:nth-child(2) { --i: 1; --f: 4; }
+.sidenav__list li:nth-child(3) { --i: 2; --f: 3; }
+.sidenav__list li:nth-child(4) { --i: 3; --f: 2; }
+.sidenav__list li:nth-child(5) { --i: 4; --f: 1; }
+.sidenav__social { --i: 5; --f: 0; }
+body.is-folded .sidenav { pointer-events: none; }
+body.is-folded .sidenav__list li, body.is-folded .sidenav__social {
+  opacity: 0; transform: translateY(calc(var(--i, 0) * -10px - 8px)) scaleY(0.6);
+  transition-delay: calc(var(--f, 0) * 0.045s); /* fold bottom first, up into the button */
+}
+body.is-folded .sidenav a { visibility: hidden; transition: visibility 0s 0.5s; }
 /* the hero head is light now: burgundy links, the logo lives in the hero head on every page */
 .sidenav__list { list-style: none; margin: 0; padding: 0; }
 .sidenav__list a {
@@ -197,8 +205,7 @@ body.is-moved .sidenav {
 .sidenav__social a:hover { color: var(--gold); }
 .sidenav__social svg { width: 18px; height: 18px; }
 
-/* floating menu button + full screen menu: phones and tablets only (desktop keeps the side menu) */
-@media (min-width: 901px) { body .menu-btn, body .overlay { display: none; } }
+/* floating menu button + full screen menu (phones: top right; desktop: top left, once the side menu folds) */
 /* top right, three thin burgundy lines (client mockup); a cream disc appears behind it once the page moves */
 .menu-btn {
   position: fixed; top: 18px; right: 18px; z-index: 60;
@@ -259,6 +266,23 @@ body.menu-open .overlay__list li:nth-child(2) a { transition-delay: 0.06s; }
 body.menu-open .overlay__list li:nth-child(3) a { transition-delay: 0.12s; }
 body.menu-open .overlay__list li:nth-child(4) a { transition-delay: 0.18s; }
 body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
+@media (min-width: 901px) {
+  .menu-btn { right: auto; left: calc(var(--gutter) - 14px); top: 22px; }
+  body.is-scrolled .menu-btn { opacity: 0; transform: translateY(-10px) scale(0.9); pointer-events: none; }
+  body.is-folded .menu-btn, body.menu-open .menu-btn { opacity: 1; transform: none; pointer-events: auto; transition-delay: 0.25s; }
+  /* the three lines draw in from the left, one after another */
+  .menu-btn span, .menu-btn span::before, .menu-btn span::after { transform-origin: left; }
+  body.menu-open .menu-btn span, body.menu-open .menu-btn span::before, body.menu-open .menu-btn span::after { transform-origin: center; }
+  body:not(.is-folded):not(.menu-open) .menu-btn span { background: transparent; }
+  body:not(.is-folded):not(.menu-open) .menu-btn span::before,
+  body:not(.is-folded):not(.menu-open) .menu-btn span::after { transform: scaleX(0); }
+  body.is-folded:not(.menu-open) .menu-btn span { animation: lineIn 0.4s var(--ease) 0.4s both; }
+  body.is-folded:not(.menu-open) .menu-btn span::before { animation: lineIn 0.4s var(--ease) 0.3s both; }
+  body.is-folded:not(.menu-open) .menu-btn span::after { animation: lineIn 0.4s var(--ease) 0.5s both; }
+  .overlay { clip-path: circle(0 at calc(var(--gutter) + 12px) 48px); }
+  body.menu-open .overlay { clip-path: circle(150% at calc(var(--gutter) + 12px) 48px); }
+}
+@keyframes lineIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 /* phones on their side: a short screen, so a slimmer wave and smaller links keep everything above it */
 @media (max-height: 500px) {
   .overlay__waves { height: 12vh; }

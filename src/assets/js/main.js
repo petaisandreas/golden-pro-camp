@@ -115,6 +115,7 @@
     const vh = window.innerHeight;
     body.classList.toggle("is-scrolled", y > vh * 0.55);
     body.classList.toggle("is-moved", y > 40);
+    body.classList.toggle("is-folded", y > 140); // desktop side menu folds into the three-line button
 
     if (!reduceMotion) {
       if (hero && y < hero.offsetHeight + vh) {
