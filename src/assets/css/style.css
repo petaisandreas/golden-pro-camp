@@ -399,6 +399,28 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   .hero__media { aspect-ratio: 5 / 4; min-height: 0; }
 }
 
+/* home opening fits one screen: logo + quote on top, the photo fills what is left, so its wavy
+   bottom edge is always in view when the page opens (very short screens grow past it) */
+.hero:not(.hero--page) {
+  display: flex; flex-direction: column;
+  min-height: 100vh; min-height: 100svh;
+}
+.hero:not(.hero--page) .hero__head { flex: none; }
+.hero:not(.hero--page) .hero__media {
+  flex: 1 1 0; aspect-ratio: auto; height: auto; min-height: 230px;
+}
+@media (min-width: 901px) {
+  /* a slightly tighter head on computers so the photo keeps a generous height */
+  .hero:not(.hero--page) .hero__head { padding-top: clamp(22px, 3.5vh, 44px); }
+  .hero:not(.hero--page) .hero__logo { width: clamp(150px, 13vw, 200px); }
+  .hero:not(.hero--page) .hero__quote .quote { font-size: clamp(22px, 2.2vw, 32px); }
+}
+
+@media (max-width: 900px) and (max-height: 720px) {
+  .hero:not(.hero--page) .hero__logo { width: 150px; }
+  .hero:not(.hero--page) .hero__head { padding-top: 16px; }
+}
+
 /* ---------- waves (the banner's flowing edges) ---------- */
 /* Two divider kinds, each with exactly ONE gold line that is a vertical copy of a shape edge, so it can never
    cross a shape or another line at any width (preserveAspectRatio="none"):
