@@ -441,6 +441,10 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
 .layers__blush { fill: var(--blush); opacity: 0.9; }
 /* the hero's own organic bottom edge is the divider into the first section */
 .hero + main > :first-child > .wave--top { display: none; }
+/* Community page: the header photo and the first section photo are both group shots, so the
+   layered waves sit between them as their own band, below the header's organic edge */
+.hero + main > :first-child > .wave--top.wave--keep { display: block; top: clamp(8px, 2vw, 24px); }
+.community:has(> .wave--keep) { padding-top: calc(clamp(110px, 15vw, 230px) + clamp(24px, 4vw, 56px)); }
 
 .wave--sweep { top: calc(var(--wave-h) * -1 + 1px); height: var(--wave-h); }
 .sweep { width: 100%; height: 100%; overflow: visible; display: block; }
