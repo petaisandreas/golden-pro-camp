@@ -28,7 +28,7 @@ PHOTOS = {
     "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
     "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
     "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
-    "environment": ("ig-18.jpg", None, 2000, True),
+    "environment-wall": ("ig-18.jpg", None, 2000, True),
     "show": (E + "09-athlete-listening-warm.jpg", None, 2000, True),
     "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
     "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
@@ -92,6 +92,29 @@ def add_headroom(im: Image.Image, frac: float = 0.16) -> Image.Image:
     return out
 
 
+def extend_wall(im: Image.Image, band: int = 260, pad: int = 1300) -> Image.Image:
+    """The quote sits on the photo above the athletes' heads, but the wall above them is short:
+    continue the (already soft) wall upward by mirroring its top strip, blurred so it reads as
+    out-of-focus wall, and soften the join."""
+    w, h = im.size
+    src = im.crop((0, 0, w, band))
+    flip = ImageOps.flip(src)
+    top = Image.new("RGB", (w, pad))
+    y, k = pad, 0
+    while y > 0:
+        y -= band
+        top.paste(flip if k % 2 == 0 else src, (0, y))
+        k += 1
+    top = top.filter(ImageFilter.GaussianBlur(18))
+    out = Image.new("RGB", (w, h + pad))
+    out.paste(top, (0, 0))
+    out.paste(im, (0, pad))
+    seam = out.crop((0, pad - 60, w, pad + 40)).filter(ImageFilter.GaussianBlur(12))
+    mask = Image.linear_gradient("L").resize((w, 100)).point(lambda v: 255 - v)
+    out.paste(seam, (0, pad - 60), mask)
+    return out
+
+
 def process_photos():
     for name, (src, crop, max_w, *keep) in PHOTOS.items():
         im = Image.open(RAW / src).convert("RGB")
@@ -99,6 +122,8 @@ def process_photos():
             im = clean_eleftheria_poster(im)
         else:
             im = trim_white_border(im)
+        if name == "environment-wall":
+            im = extend_wall(im)
         if crop:
             w, h = im.size
             im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
