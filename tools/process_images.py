@@ -28,7 +28,7 @@ PHOTOS = {
     "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
     "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
     "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
-    "environment-wall": ("ig-18.jpg", None, 2000, True),
+    "environment-soft": ("ig-18.jpg", None, 2000, True),
     "show": (E + "09-athlete-listening-warm.jpg", None, 2000, True),
     "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
     "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
@@ -37,7 +37,7 @@ PHOTOS = {
     "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
     "join": (E + "08-bw-rolling.jpg", None, 2400, True),
     "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
-    "eleftheria": ("ig-eleftheria.jpg", (0.42, 0.06, 0.972, 1.0), 1200),
+    "eleftheria-fade": ("ig-eleftheria.jpg", (0.42, 0.13, 1.0, 1.0), 1200),
 }
 
 
@@ -109,24 +109,31 @@ def extend_wall(im: Image.Image, band: int = 260, pad: int = 1300) -> Image.Imag
     out = Image.new("RGB", (w, h + pad))
     out.paste(top, (0, 0))
     out.paste(im, (0, pad))
-    seam = out.crop((0, pad - 60, w, pad + 40)).filter(ImageFilter.GaussianBlur(12))
-    mask = Image.linear_gradient("L").resize((w, 100)).point(lambda v: 255 - v)
-    out.paste(seam, (0, pad - 60), mask)
+    # long, eased hand-over from the blurred wall to the sharp photo (stops above the hair at ~y=230)
+    a, b = pad - 260, pad + 220
+    soft = out.crop((0, a, w, b)).filter(ImageFilter.GaussianBlur(18))
+    n = b - a
+    ease = [round(255 * (1 - (3 * t * t - 2 * t ** 3))) for t in (i / (n - 1) for i in range(n))]
+    mask = Image.new("L", (1, n))
+    mask.putdata(ease)
+    out.paste(soft, (0, a), mask.resize((w, n)))
     return out
 
 
 def process_photos():
     for name, (src, crop, max_w, *keep) in PHOTOS.items():
         im = Image.open(RAW / src).convert("RGB")
-        if name == "eleftheria":
+        if name == "eleftheria-fade":
             im = clean_eleftheria_poster(im)
         else:
             im = trim_white_border(im)
-        if name == "environment-wall":
+        if name == "environment-soft":
             im = extend_wall(im)
         if crop:
             w, h = im.size
             im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
+        if name == "eleftheria-fade":
+            im = add_headroom(im)  # the soft top fade lands on empty backdrop, not her hair
         if im.width > max_w:
             im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
         out = im if keep and keep[0] else sepia(im)
