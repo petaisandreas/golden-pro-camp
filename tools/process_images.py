@@ -112,7 +112,7 @@ def process_photos():
         print("photo", name, im.size)
 
 
-MAX_LOGO_W = 700
+MAX_LOGO_W = 800
 GOLD_ON_DARK = (236, 211, 171)  # --gold-3
 
 
@@ -156,7 +156,12 @@ def lighten_wordmark(rgba: Image.Image) -> Image.Image:
     """Recolour dark, reddish pixels (the wine wordmark) to gold, keep alpha."""
     out = rgba.copy()
     px = out.load()
-    for y in range(out.height):
+    # only the lettering below the emblem (the emblem's painting has dark reds of its own)
+    solid = rgba.getchannel("A").point(lambda v: 255 if v > 40 else 0)
+    gap = [y for y in range(int(rgba.height * 0.6), rgba.height)
+           if solid.crop((0, y, rgba.width, y + 1)).getbbox() is None]
+    start = gap[0] if gap else 0
+    for y in range(start, out.height):
         for x in range(out.width):
             r, g, b, a = px[x, y]
             lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
