@@ -906,3 +906,40 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .pframe .flow { display: none; }
 /* the text used to start over the photo's faded foot; framed photos keep it clear below */
 .feature .feature__body { margin-top: 0; padding-top: clamp(28px, 4vw, 60px); }
+
+/* ---------- header foot + Eleftheria joined (client: her photo starts where the header photo ends) ----------
+   The header's wavy foot has a fixed height (it no longer stretches with the photo), so the portrait
+   can be pulled up into it: its top edge follows the same cream curve, and the header's rose ribbon
+   is the only thing between the two photos. */
+:root {
+  --hero-foot: clamp(64px, 10vw, 120px);
+  /* the area below the header's cream curve, as a mask for the photo that tucks into it */
+  --hero-under: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 160' preserveAspectRatio='none'%3E%3Cpath d='M0,160 V115 C260,155 560,160 780,120 C880,102 950,75 1000,30 V160 Z'/%3E%3C/svg%3E");
+}
+.hero__foot { position: absolute; z-index: 3; left: 0; right: 0; bottom: -1px; width: 100%; height: calc(var(--hero-foot) + 1px); display: block; pointer-events: none; }
+@media (max-width: 900px) {
+  /* phones: framed photos run edge to edge; the sides are the screen edges, only top and bottom wave */
+  .pframe--card { --pf-o: var(--pf-band-o); --pf-i: var(--pf-band-i); }
+  .founder__portrait.pframe {
+    margin: calc((clamp(60px, 9vw, 120px) + var(--hero-foot)) * -1) calc(var(--gutter) * -1) 0;
+    width: auto; z-index: 4;
+  }
+  .founder__portrait.pframe,
+  .founder__portrait.pframe img {
+    --cut: var(--hero-under) 0 0 / 100% var(--hero-foot) no-repeat,
+           linear-gradient(#000, #000) 0 var(--hero-foot) / 100% calc(100% - var(--hero-foot)) no-repeat;
+  }
+  .founder__portrait.pframe {
+    -webkit-mask: var(--cut), var(--pf-foot-o) 0 0 / 100% 100% no-repeat;
+    -webkit-mask-composite: source-over, source-in;
+    mask: var(--cut), var(--pf-foot-o) 0 0 / 100% 100% no-repeat;
+    mask-composite: add, intersect;
+  }
+  .founder__portrait.pframe img {
+    -webkit-mask: var(--cut), var(--pf-foot-i) 0 0 / 100% 100% no-repeat !important;
+    -webkit-mask-composite: source-over, source-in !important;
+    mask: var(--cut), var(--pf-foot-i) 0 0 / 100% 100% no-repeat !important;
+    mask-composite: add, intersect !important;
+  }
+  .js .founder__portrait[data-reveal] { transform: none; }
+}
