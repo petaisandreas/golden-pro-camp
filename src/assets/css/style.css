@@ -854,7 +854,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
    above the faces. Only the bottom melts into the paper. */
 .feature--full { --lh: clamp(110px, 15vw, 230px); }
 .feature--full .wave--top .layers__rose, .feature--full .wave--top .layers__blush { opacity: 1; }
-.feature--full .feature__media { margin-top: calc(var(--lh) * -0.135); }
+.feature--full .feature__media { top: calc(var(--lh) * -0.135); margin-bottom: calc(var(--lh) * -0.135); }
 .feature--full .feature__quote {
   position: absolute; left: 0; right: 0; top: 0; z-index: 2;
   padding: calc(var(--lh) * 0.34 + clamp(6px, 0.8vw, 12px)) var(--gutter) 0;
