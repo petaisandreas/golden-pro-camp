@@ -848,3 +848,27 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 @media (max-width: 900px) {
   .stack { --stack-ar: 1.25; }
 }
+
+/* "not about the show": the photo runs right up under the pink frame (its top edge hides inside the
+   wave bands, so there is no seam and no top fade) and the heading sits on the photo's dark top,
+   above the faces. Only the bottom melts into the paper. */
+.feature--full { --lh: clamp(110px, 15vw, 230px); }
+.feature--full .wave--top .layers__rose, .feature--full .wave--top .layers__blush { opacity: 1; }
+.feature--full .feature__media { margin-top: calc(var(--lh) * -0.135); }
+.feature--full .feature__quote {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 2;
+  padding: calc(var(--lh) * 0.34 + clamp(6px, 0.8vw, 12px)) var(--gutter) 0;
+}
+.feature--full .feature__quote .eyebrow { color: #e9c9a6; }
+.feature--full .feature__quote .quote { color: #f6ece4; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
+.feature--full .feature__quote .quote em { color: #ecc79a; }
+.feature--full .feature__media img {
+  aspect-ratio: 6 / 5; object-position: 50% 0%;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 76%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 76%, transparent 100%);
+}
+@media (max-width: 900px) {
+  .feature--full .feature__media img { aspect-ratio: 1 / 2; object-position: 50% 0%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%); }
+}

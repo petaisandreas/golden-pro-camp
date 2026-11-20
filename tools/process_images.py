@@ -25,7 +25,6 @@ LIGHT = (240, 231, 223)
 # keep colour = True: the client's own photos go on the site exactly as she sent them (no tone)
 E = "email-2026-11-20/"
 PHOTOS = {
-    "hero-1": (E + "11-circle-teaching-sunlight.jpg", None, 2400, True),
     "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
     "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
     "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
@@ -34,7 +33,7 @@ PHOTOS = {
     "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
     "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
     "community-joy": (E + "06-group-photo-hall.jpg", None, 2400, True),
-    "community-stack": (E + "07-drilling-colour.jpg", None, 2400, True),
+    "community-stack": (E + "12-bw-choke-closeup.jpg", None, 2400, True),
     "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
     "join": (E + "08-bw-rolling.jpg", None, 2400, True),
     "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
