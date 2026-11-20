@@ -872,3 +872,37 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%); }
 }
+
+/* ---------- wavy photo frames (client: no faded photos) ----------
+   Every photo that used to melt into the paper now sits in a wavy frame: the outer shape is a
+   thin rose-to-brick ribbon (light along the top wave, deep along the bottom wave) and the photo
+   is cut to the same shape a little inside it, so almost none of the picture is lost.
+   --band: wavy top and bottom (full-width photos); --foot: wavy bottom only (photos whose top is
+   already hidden under a pink wave or ribbon); --card: wavy on all four sides. */
+:root {
+  --pf-band-o: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,3 C22,0 48,0 72,2.4 C86,3.8 94,3.4 100,1.6 L100,97 C82,100 58,100 34,97.4 C18,95.8 8,96.2 0,98 Z'/%3E%3C/svg%3E");
+  --pf-band-i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,4.4 C22,1.4 48,1.4 72,3.8 C86,5.2 94,4.8 100,3 L100,94.4 C82,97.4 58,97.4 34,94.8 C18,93.2 8,93.6 0,95.4 Z'/%3E%3C/svg%3E");
+  --pf-foot-o: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L100,0 L100,97 C82,100 58,100 34,97.4 C18,95.8 8,96.2 0,98 Z'/%3E%3C/svg%3E");
+  --pf-foot-i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L100,0 L100,94.4 C82,97.4 58,97.4 34,94.8 C18,93.2 8,93.6 0,95.4 Z'/%3E%3C/svg%3E");
+  --pf-card-o: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M2,3 C30,0 66,0.6 98,2.2 C99.6,30 100,68 98.4,97 C66,100 34,99.4 2,97.6 C0.4,70 0,32 2,3 Z'/%3E%3C/svg%3E");
+  --pf-card-i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M2,4.4 C30,1.4 66,2 98,3.6 C99.6,30 100,68 98.4,94.4 C66,97.4 34,96.8 2,95 C0.4,70 0,32 2,4.4 Z'/%3E%3C/svg%3E");
+}
+.pframe {
+  --pf-o: var(--pf-band-o); --pf-i: var(--pf-band-i);
+  position: relative;
+  background: linear-gradient(180deg, #dcb8ad 0%, #c8938b 45%, #7e4244 100%);
+  -webkit-mask: var(--pf-o) 0 0 / 100% 100% no-repeat; mask: var(--pf-o) 0 0 / 100% 100% no-repeat;
+  -webkit-mask-composite: source-over; mask-composite: add;
+}
+.pframe--foot { --pf-o: var(--pf-foot-o); --pf-i: var(--pf-foot-i); }
+.pframe--card { --pf-o: var(--pf-card-o); --pf-i: var(--pf-card-i); }
+.pframe img {
+  display: block;
+  -webkit-mask: var(--pf-i) 0 0 / 100% 100% no-repeat !important; mask: var(--pf-i) 0 0 / 100% 100% no-repeat !important;
+  -webkit-mask-composite: source-over !important; mask-composite: add !important;
+  transform: none !important;
+}
+.feature__media .pframe { order: 1; }
+.pframe .flow { display: none; }
+/* the text used to start over the photo's faded foot; framed photos keep it clear below */
+.feature .feature__body { margin-top: 0; padding-top: clamp(28px, 4vw, 60px); }

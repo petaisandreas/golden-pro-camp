@@ -37,7 +37,7 @@ PHOTOS = {
     "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
     "join": (E + "08-bw-rolling.jpg", None, 2400, True),
     "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
-    "eleftheria": ("ig-eleftheria.jpg", (0.42, 0.13, 1.0, 1.0), 1200),
+    "eleftheria": ("ig-eleftheria.jpg", (0.42, 0.06, 0.972, 1.0), 1200),
 }
 
 
@@ -102,8 +102,6 @@ def process_photos():
         if crop:
             w, h = im.size
             im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
-        if name == "eleftheria":
-            im = add_headroom(im)
         if im.width > max_w:
             im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
         out = im if keep and keep[0] else sepia(im)
