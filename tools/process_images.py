@@ -34,6 +34,7 @@ PHOTOS = {
     "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
     "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
     "community-joy": (E + "06-group-photo-hall.jpg", None, 2400, True),
+    "community-stack": (E + "07-drilling-colour.jpg", None, 2400, True),
     "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
     "join": (E + "08-bw-rolling.jpg", None, 2400, True),
     "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
