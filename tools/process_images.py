@@ -21,21 +21,21 @@ DARK = (14, 11, 10)
 MID = (118, 104, 94)
 LIGHT = (240, 231, 223)
 
-# output name -> (raw file, crop box as fractions (l, t, r, b) or None, max width)
+# output name -> (raw file, crop box as fractions (l, t, r, b) or None, max width[, keep colour])
+# keep colour = True: the client's own photos go on the site exactly as she sent them (no tone)
+E = "email-2026-11-20/"
 PHOTOS = {
-    "hero-1": ("ig-03.jpg", None, 2400),
-    "hero-2": ("ig-12.jpg", None, 2400),
-    "hero-3": ("ig-18.jpg", None, 2400),
-    "hero-4": ("ig-05.jpg", None, 2400),
-    "environment": ("ig-14.jpg", None, 2000),
-    "show": ("ig-08.jpg", None, 2000),
-    "show-detail": ("ig-15.jpg", (0.04, 0.0, 0.64, 1.0), 1400),
-    "community": ("ig-19.jpg", None, 2000),
-    "community-joy": ("ig-11.jpg", None, 2000),
-    "what-is-golden": ("ig-10.jpg", None, 2000),
-    "who-is-golden": ("ig-11.jpg", None, 1600),
-    "join": ("ig-06.jpg", None, 2000),
-    "apply": ("ig-15.jpg", None, 1600),
+    "hero-1": (E + "11-circle-teaching-sunlight.jpg", None, 2400, True),
+    "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
+    "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
+    "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
+    "show": (E + "09-athlete-listening-warm.jpg", None, 2000, True),
+    "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
+    "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
+    "community-joy": (E + "06-group-photo-hall.jpg", None, 2400, True),
+    "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
+    "join": (E + "08-bw-rolling.jpg", None, 2400, True),
+    "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
     "eleftheria": ("ig-eleftheria.jpg", (0.42, 0.13, 1.0, 1.0), 1200),
 }
 
@@ -92,7 +92,7 @@ def add_headroom(im: Image.Image, frac: float = 0.16) -> Image.Image:
 
 
 def process_photos():
-    for name, (src, crop, max_w) in PHOTOS.items():
+    for name, (src, crop, max_w, *keep) in PHOTOS.items():
         im = Image.open(RAW / src).convert("RGB")
         if name == "eleftheria":
             im = clean_eleftheria_poster(im)
@@ -105,7 +105,8 @@ def process_photos():
             im = add_headroom(im)
         if im.width > max_w:
             im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
-        sepia(im).save(OUT / f"{name}.jpg", quality=80, optimize=True, progressive=True)
+        out = im if keep and keep[0] else sepia(im)
+        out.save(OUT / f"{name}.jpg", quality=80, optimize=True, progressive=True)
         print("photo", name, im.size)
 
 
