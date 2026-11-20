@@ -935,3 +935,11 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   .founder__tuck .founder__portrait.pframe { margin: 0; --pf-o: var(--pf-foot-o); --pf-i: var(--pf-foot-i); }
   .js .founder__portrait[data-reveal] { transform: none; }
 }
+
+/* Community (client): the pink waves under the choke photo join the photo, no cream gap.
+   The waves are drawn over the photo's foot and lowered so its bottom edge (y≈97 of 200) always
+   lies inside the bands at every width, like the "not just about the show" photo. */
+.stack__img.pframe { position: absolute; } /* the frame rule made it relative, so it stopped filling the stack */
+.stack + .section { z-index: 5; }
+.stack + .section > .wave--top { top: calc(var(--layers-h) * -0.485); }
+.stack + .section > .wave--top .layers__rose, .stack + .section > .wave--top .layers__blush { opacity: 1; }
