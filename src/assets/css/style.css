@@ -811,6 +811,8 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   /* features on phones: a taller box so the faces stay big, and no parallax */
   .feature__quote { padding: clamp(48px, 10vw, 80px) var(--gutter) 0.6rem; }
   .feature__media img { aspect-ratio: 5 / 4; transform: none !important; }
+  /* phone photos are short: the same eased melt, compressed so it clears the faces */
+  .feature__media img { -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.12) 4%, rgba(0,0,0,.4) 9%, rgba(0,0,0,.75) 14%, #000 19%, #000 80%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.12) 4%, rgba(0,0,0,.4) 9%, rgba(0,0,0,.75) 14%, #000 19%, #000 80%, transparent 100%); }
   .footer__grid { grid-template-columns: 1fr; gap: 2.4rem; }
   .form__grid { grid-template-columns: 1fr; }
   .feature__body { margin-top: 0; }
