@@ -37,7 +37,7 @@ PHOTOS = {
     "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
     "join": (E + "08-bw-rolling.jpg", None, 2400, True),
     "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
-    "eleftheria-fade": ("ig-eleftheria.jpg", (0.42, 0.13, 1.0, 1.0), 1200),
+    "eleftheria-top": ("ig-eleftheria.jpg", (0.42, 0.07, 0.985, 1.0), 1200),
 }
 
 
@@ -123,7 +123,7 @@ def extend_wall(im: Image.Image, band: int = 260, pad: int = 1300) -> Image.Imag
 def process_photos():
     for name, (src, crop, max_w, *keep) in PHOTOS.items():
         im = Image.open(RAW / src).convert("RGB")
-        if name == "eleftheria-fade":
+        if name == "eleftheria-top":
             im = clean_eleftheria_poster(im)
         else:
             im = trim_white_border(im)
@@ -132,8 +132,6 @@ def process_photos():
         if crop:
             w, h = im.size
             im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
-        if name == "eleftheria-fade":
-            im = add_headroom(im)  # the soft top fade lands on empty backdrop, not her hair
         if im.width > max_w:
             im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
         out = im if keep and keep[0] else sepia(im)

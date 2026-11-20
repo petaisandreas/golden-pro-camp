@@ -973,3 +973,13 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   }
   .js .founder__tuck .founder__portrait[data-reveal] { transform: none; }
 }
+
+/* Eleftheria on computers (client): closer to the header, and the soft top fade stays on the plain
+   backdrop above her hair (the portrait has natural space above her head, nothing painted in) */
+@media (min-width: 901px) {
+  .founder__portrait {
+    margin-top: calc(clamp(60px, 9vw, 120px) * -1 - clamp(20px, 3vw, 48px));
+    --pm-oval: radial-gradient(ellipse 66% 80% at 50% 50%, #000 62%, transparent 100%);
+    --pm-y: linear-gradient(180deg, transparent 0%, #000 6%, #000 66%, transparent 96%);
+  }
+}
