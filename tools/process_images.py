@@ -29,6 +29,7 @@ PHOTOS = {
     "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
     "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
     "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
+    "environment": ("ig-14.jpg", None, 2000),
     "show": (E + "09-athlete-listening-warm.jpg", None, 2000, True),
     "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
     "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
