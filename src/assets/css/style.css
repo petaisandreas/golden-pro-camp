@@ -943,3 +943,13 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .stack + .section { z-index: 5; }
 .stack + .section > .wave--top { top: calc(var(--layers-h) * -0.485); }
 .stack + .section > .wave--top .layers__rose, .stack + .section > .wave--top .layers__blush { opacity: 1; }
+
+/* "not about the show" (client): on computers the side photo ends where the words beside it end */
+@media (min-width: 901px) {
+  .inset-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 38%); column-gap: clamp(28px, 4vw, 56px); align-items: stretch; }
+  .inset-row > p { grid-column: 1; }
+  .inset-row > .inset-photo { grid-column: 2; grid-row: 1 / span 20; float: none; width: auto; margin: 0; align-self: stretch; }
+  .inset-row > .inset-photo { position: relative; min-height: 0; }
+  .inset-row > .inset-photo img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
+  .inset-row > p:last-of-type { margin-bottom: 0; }
+}
