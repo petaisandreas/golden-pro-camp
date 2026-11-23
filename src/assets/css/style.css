@@ -979,6 +979,8 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
    lies inside the bands at every width, like the "not just about the show" photo. */
 .stack__img.pframe { position: absolute; } /* the frame rule made it relative, so it stopped filling the stack */
 .stack + .section { z-index: 5; }
+.stack + .section + .section { z-index: 6; } /* the next section's wave still lies over it (no straight edge) */
+.footer { z-index: 7; } /* the footer is always last, so its sweep lies over whatever comes before it */
 .stack + .section > .wave--top { top: calc(var(--layers-h) * -0.485); }
 .stack + .section > .wave--top .layers__rose, .stack + .section > .wave--top .layers__blush { opacity: 1; }
 
