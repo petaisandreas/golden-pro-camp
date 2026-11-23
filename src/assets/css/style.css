@@ -996,11 +996,37 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* "the right environment" (client): same layout as "not just about the show" - the photo runs up
    under the pink waves and the quote sits on the (light) wall above the athletes' heads */
 .feature--full .wave--layers .layers__rose, .feature--full .wave--layers .layers__blush { opacity: 1; }
-.feature--wall .feature__quote .quote { color: var(--burgundy); text-shadow: 0 1px 14px rgba(255, 255, 255, .55); }
-.feature--wall .feature__quote .quote em { color: #8a5a2e; }
-.feature--full.feature--wall .feature__media img { aspect-ratio: 5 / 4; object-position: 50% 100%; }
+/* client: the photo stays sharp, as shot (its wall is too short for the words), so the quote sits on
+   the paper just above it - burgundy + gold like the other quotes on paper - and the photo gets the
+   same wavy top and bottom frame as the other full-width photos */
+.feature--full.feature--wall .feature__media { top: 0; margin-bottom: 0; }
+.feature--full.feature--wall .feature__quote {
+  position: relative; inset: auto;
+  padding: calc(var(--lh) * 0.55) var(--gutter) clamp(18px, 2.4vw, 36px);
+}
+.feature--full.feature--wall .feature__quote .quote { color: var(--burgundy); text-shadow: none; }
+.feature--full.feature--wall .feature__quote .quote em { color: var(--gold); }
+.feature--full.feature--wall .feature__media img {
+  aspect-ratio: 3 / 2; object-position: 50% 50%;
+  -webkit-mask-image: none; mask-image: none;
+}
 @media (max-width: 900px) {
-  .feature--full.feature--wall .feature__media img { aspect-ratio: 1 / 1; object-position: 50% 100%; }
+  .feature--full.feature--wall .feature__media img { aspect-ratio: 3 / 2; object-position: 50% 50%; } /* all three athletes stay in */
+}
+/* client: on computers the quote sits IN the photo, small like the header quote ("Diamonds are created
+   under pressure"), white + gold, on one line in the strip of wall between the wavy top and the heads
+   (the frame covers ~5% of the height, the first head starts at ~10%) */
+@media (min-width: 901px) {
+  .feature--full.feature--wall .feature__quote {
+    position: absolute; left: 0; right: 0; top: 4.4%; z-index: 3;
+    padding: 0 var(--gutter);
+  }
+  .feature--full.feature--wall .feature__quote .quote {
+    max-width: none; font-size: clamp(22px, 2.6vw, 50px); line-height: 1.1;
+    color: #f6ece4; text-shadow: 0 2px 14px rgba(30, 12, 14, .6), 0 0 2px rgba(30, 12, 14, .4);
+  }
+  .feature--full.feature--wall .feature__quote .quote em { color: #ecc79a; }
+  .feature--full.feature--wall .feature__media { margin-top: calc(var(--lh) * 0.3); }
 }
 
 /* Eleftheria (client): no frame, soft fade on the sides and bottom, and on phones her photo starts
