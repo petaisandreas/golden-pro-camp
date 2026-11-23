@@ -11,8 +11,8 @@
     "location": "Larnaca, Cyprus"
   },
   "credit": {
-    "name": "Your Name",
-    "email": "your.new.email@gmail.com",
+    "name": "",
+    "email": "",
     "url": ""
   },
   "camps": [
@@ -34,7 +34,11 @@
       "country": "",
       "whatsapp": "",
       "achievements": "",
-      "about": ""
+      "about": "",
+      "guardianName": "",
+      "guardianContact": "",
+      "guardianConsent": "",
+      "privacyConsent": ""
     }
   }
 }

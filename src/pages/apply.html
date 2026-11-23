@@ -38,7 +38,7 @@
             <p data-reveal><strong>If this sounds like the environment you&rsquo;re looking for, apply to join us.</strong></p>
           </div>
 
-          <form class="form" id="apply-form" data-reveal
+          <form class="form" id="apply-form" method="post" data-reveal
                 data-action="{{ apply.googleFormAction }}"
                 data-form-url="{{ apply.googleFormUrl }}"
                 data-entries="{{ apply.entries }}"
@@ -84,6 +84,31 @@
               <div class="field field--full">
                 <label for="f-about">Tell us a little about yourself and your goals in Jiu-Jitsu <span>*</span></label>
                 <textarea id="f-about" name="about" required></textarea>
+              </div>
+            </div>
+
+            <fieldset class="form__group" id="under18" hidden disabled>
+              <legend>Under 18</legend>
+              <div class="form__grid">
+                <div class="field">
+                  <label for="f-guardian-name">Parent/guardian full name <span>*</span></label>
+                  <input id="f-guardian-name" name="guardianName" autocomplete="off" required>
+                </div>
+                <div class="field">
+                  <label for="f-guardian-contact">Parent/guardian email or phone <span>*</span></label>
+                  <input id="f-guardian-contact" name="guardianContact" autocomplete="off" required>
+                </div>
+                <div class="field field--full field--check">
+                  <input id="f-guardian-consent" name="guardianConsent" type="checkbox" value="Yes" required>
+                  <label for="f-guardian-consent">My parent or guardian knows I am applying and agrees to it. I understand Golden will contact them and ask for a signed consent form before I can take part. <span>*</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form__grid form__grid--consent">
+              <div class="field field--full field--check">
+                <input id="f-privacy" name="privacyConsent" type="checkbox" value="Yes" required>
+                <label for="f-privacy">I have read the <a href="privacy.html">privacy policy</a> and agree that Golden stores my application to review it. <span>*</span></label>
               </div>
             </div>
             <div class="form__actions">

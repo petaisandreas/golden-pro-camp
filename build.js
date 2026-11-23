@@ -19,11 +19,12 @@ const escapeHtml = (s) =>
 // footer heading matches the number of camps listed
 data.campsHeading = (data.camps || []).filter((c) => c.show !== false).length === 1 ? "Next camp" : "Next camps";
 
-// cache-busting: style.css/main.js get ?v=<content hash> so phones and in-app browsers
+// cache-busting: style.css/main.js/early.js get ?v=<content hash> so phones and in-app browsers
 // (Instagram, Facebook) never keep showing an old design after an update
 data.assetVersion = require("crypto").createHash("sha1")
   .update(fs.readFileSync(path.join(SRC, "assets", "css", "style.css")))
   .update(fs.readFileSync(path.join(SRC, "assets", "js", "main.js")))
+  .update(fs.readFileSync(path.join(SRC, "assets", "js", "early.js")))
   .digest("hex").slice(0, 10);
 
 const lookup = (key) => key.split(".").reduce((o, k) => (o == null ? o : o[k]), data);

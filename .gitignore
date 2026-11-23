@@ -2,3 +2,6 @@ dist/
 node_modules/
 __pycache__/
 .DS_Store
+
+# client originals: kept locally, never published (privacy)
+assets/raw/

@@ -75,7 +75,7 @@
   } else {
     revealables.forEach((el) => el.classList.add("is-in"));
   }
-  // tells the safety net in head.html that hidden content will be revealed
+  // tells the safety net in early.js that hidden content will be revealed
   window.goldenReady = true;
 
   // ---- hero slideshow: crossfade to the next photo every few seconds ----
@@ -152,10 +152,28 @@
     try { entries = JSON.parse(form.dataset.entries || "{}"); } catch (e) { entries = {}; }
     const action = form.dataset.action;
     const formUrl = form.dataset.formUrl;
-    const connected = action && Object.values(entries).every(Boolean);
+    const connected =
+      /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/formResponse$/.test(action || "") &&
+      Object.values(entries).length > 0 &&
+      Object.values(entries).every((v) => /^entry\.\d+$/.test(v));
+
+    // under-18 section: only shown (and only validated) when the age is a number below 18.
+    // A disabled fieldset takes its fields out of validation.
+    const ageInput = form.elements.age;
+    const under18 = document.getElementById("under18");
+    const syncUnder18 = () => {
+      const age = ageInput.value.trim() === "" ? NaN : Number(ageInput.value);
+      const show = Number.isFinite(age) && age < 18;
+      under18.hidden = !show;
+      under18.disabled = !show;
+    };
+    ageInput.addEventListener("input", syncUnder18);
+    ageInput.addEventListener("change", syncUnder18);
+    syncUnder18();
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      syncUnder18();
       const invalid = Array.from(form.elements).find((el) => el.willValidate && !el.checkValidity());
       if (invalid) {
         status.textContent = "Please fill in every field marked with *.";
@@ -175,7 +193,10 @@
 
       const data = new FormData();
       Object.entries(entries).forEach(([field, entryId]) => {
-        data.append(entryId, form.elements[field] ? form.elements[field].value : "");
+        const el = form.elements[field];
+        let value = "";
+        if (el && !el.disabled) value = el.type === "checkbox" ? (el.checked ? "Yes" : "") : el.value;
+        data.append(entryId, value);
       });
       const button = form.querySelector("button[type=submit]");
       button.disabled = true;
@@ -184,7 +205,7 @@
         // Google Forms does not send CORS headers, so the response is opaque.
         await fetch(action, { method: "POST", mode: "no-cors", body: data });
         form.classList.add("is-sent");
-        status.textContent = "Thank you! Your application is in. We review every application individually and will email you.";
+        status.textContent = "Thank you! Your application is in. We review every application individually and will email you. No reply within 10 days? Message us on Instagram.";
       } catch (err) {
         button.disabled = false;
         status.textContent = "Something went wrong. Please try again, or message us on Instagram.";
