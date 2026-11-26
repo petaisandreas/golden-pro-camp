@@ -1032,3 +1032,16 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* "Competition is what people see" runs as one centred block of text */
 .show-text { max-width: 46rem; margin-left: auto; margin-right: auto; }
 .show-text .headline { margin-bottom: 1.2rem; }
+
+/* ---------- phone fixes ---------- */
+/* the closing tagline was pale gold on cream: a deeper gold that reads on any screen */
+.tagline { color: #835629; font-weight: 600; }
+@media (max-width: 600px) {
+  /* home carousel and the Community mid photo were thin strips on phones: taller, so the photo leads */
+  .hero:not(.hero--page) .hero__media, .mid-carousel { aspect-ratio: 4 / 5; }
+  /* the quote gets room above the athletes' heads */
+  .hero:not(.hero--page) .hero__quotes { padding-top: 40px; }
+  .hero:not(.hero--page) .hero__media::before { height: 50%; }
+  /* sub-page headers: a little air between the logo and the page title */
+  .hero--page .hero__title { margin-top: 1.7rem; }
+}
