@@ -25,7 +25,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check "pillow==11.3.0"
+      # refuse to publish if an original in src/photos still carries hidden data (GPS, camera, names)
+      - run: python tools/optimize_photos.py --check src/photos
       - run: node build.js
+      # shrink the published copies (max 2400 px, web quality), strip all metadata, then verify
+      - run: python tools/optimize_photos.py dist/photos
+      - run: python tools/optimize_photos.py --check dist/photos
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

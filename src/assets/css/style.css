@@ -96,15 +96,6 @@ p { margin: 0 0 1.15em; }
 }
 
 /* ---------- type ---------- */
-.eyebrow {
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 11px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--gold-text);
-  margin: 0 0 1.2rem;
-}
 .quote {
   font-family: var(--serif);
   font-style: italic;
@@ -136,15 +127,6 @@ p { margin: 0 0 1.15em; }
   letter-spacing: 0.04em;
   color: var(--burgundy);
   margin: 0 0 0.4em;
-}
-.title small {
-  display: block;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  color: var(--gold-text);
-  margin-top: 0.9rem;
 }
 .headline {
   font-family: var(--serif);
@@ -343,16 +325,13 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
 .hero__blob--tl, .hero__blob--tr { top: 0; height: min(74%, 400px); width: auto; aspect-ratio: 600 / 460; }
 .hero__blob--tl { left: 0; }
 .hero__blob--tr { right: 0; transform: scaleX(-1); }
-.hero__blob--r { right: 0; top: 30%; height: min(48%, 380px); width: auto; aspect-ratio: 220 / 420; }
 .blob__soft { fill: rgba(200, 147, 139, 0.28); }
 .blob__deep { opacity: 0.9; }
-.blob__blush { fill: rgba(220, 184, 173, 0.55); }
 .blob__line { fill: none; stroke: var(--gold-2); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 /* desktop: the text nav sits top-left, so that corner stays a soft wash; the rich burgundy blob goes top-right */
 .hero__blob--tl { height: min(97%, 400px); } /* big enough that its edge passes well clear of the nav text */
 .hero__blob--tl .blob__deep, .hero__blob--tl .blob__line { opacity: 0; }
 .hero__blob--tl .blob__soft { fill: rgba(220, 184, 173, 0.5); }
-.hero__blob--r { display: none; }
 
 .hero__brand { margin: 0; display: flex; flex-direction: column; align-items: center; font: inherit; }
 .hero__logo { width: clamp(180px, 16vw, 230px); height: auto; }
@@ -361,42 +340,56 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
   font-family: var(--sans); font-weight: 500; font-size: 11px; line-height: 1.4;
   letter-spacing: 0.42em; text-transform: uppercase; color: var(--burgundy);
 }
-.hero__quotes { display: grid; width: min(100%, 36rem); }
+/* the slogan stays in the cream head */
+.hero__slogan {
+  margin: 1.1rem 0 0; max-width: 36rem;
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  font-size: clamp(22px, 2.6vw, 36px); line-height: 1.18; color: var(--burgundy);
+}
+.hero__slogan em { display: block; color: var(--gold); }
+/* the rotating quotes sit INSIDE the top of the photo, styled like "It's not just about the show" */
+.hero__quotes {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 4;
+  display: grid; text-align: center; pointer-events: none;
+  padding: calc(4vw + 10px) var(--gutter) 0;
+}
 .hero__quote {
   grid-area: 1 / 1; margin: 0;
   opacity: 0; transform: translateY(10px);
   transition: opacity 0.9s var(--ease), transform 1.2s var(--ease);
 }
 .hero__quote.is-active { opacity: 1; transform: none; transition-delay: 0.35s; }
-.hero__quote .quote { font-size: clamp(24px, 2.6vw, 36px); line-height: 1.18; }
-.hero__quote .quote em { display: block; }
-.hero__quote .quote__by { margin-top: 0.5rem; font-size: 16px; }
+.hero__quote .quote { max-width: 16em; margin: 0 auto; color: #f6ece4; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
+.hero__quote .quote em { color: #ecc79a; }
+.hero__quote .quote__by { margin-top: 0.4rem; font-size: 18px; color: #ecc79a; text-shadow: 0 2px 14px rgba(0,0,0,.5); }
 .hero__quote .quote__by::before { display: none; }
+@media (max-width: 600px) { .hero__quote .quote { font-size: 25px; } .hero__quote .quote__by { font-size: 16px; margin-top: 0.2rem; } }
 
-/* the photo shows (nearly) whole: 3:2 box, organic corners only cut the edges (hero-frame.html) */
+/* the photo shows whole: a 3:2 box (photos are 3:2); organic corners only cover the very edges (hero-frame.html) */
 .hero__media {
   position: relative; z-index: 1;
   aspect-ratio: 3 / 2; height: auto;
   overflow: hidden;
   background: var(--burgundy-3);
 }
-@media (min-width: 1200px) {
-  .hero__media { aspect-ratio: auto; height: min(66.6vw, 100vh, 980px); height: min(66.6vw, 100svh, 980px); }
-  .hero--page .hero__media { height: min(62vw, 90vh, 900px); height: min(62vw, 90svh, 900px); }
-}
 .hero__slide {
-  position: absolute; left: 0; right: 0; top: -5%; bottom: 0; /* a little room above for the parallax drift */
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
   opacity: 0;
-  transition: opacity 1.6s var(--ease);
+  transition: opacity 2.5s var(--ease); /* slow crossfade */
 }
 .hero__slide.is-active { opacity: 1; }
 .hero__slide img {
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%;
   transform-origin: center;
   transform: scale(1.05);
-  transition: transform 7s linear;
+  transition: transform 9s linear;
 }
 .hero__slide.is-active img { transform: scale(1.0); }
+.hero__media::before { /* soft warm shade at the top so the quote reads on light walls */
+  content: ""; position: absolute; inset: 0 0 auto; height: 42%; z-index: 2; pointer-events: none;
+  background: linear-gradient(180deg, rgba(50, 11, 15, 0.34), rgba(50, 11, 15, 0));
+}
+.hero--page .hero__media::before { display: none; }
 .hero__media::after { /* soft warm depth at the foot of the photo */
   content: ""; position: absolute; inset: auto 0 0; height: 25%; z-index: 2; pointer-events: none;
   background: linear-gradient(180deg, rgba(50, 11, 15, 0), rgba(50, 11, 15, 0.28));
@@ -409,52 +402,33 @@ body.menu-open .overlay__list li:nth-child(5) a { transition-delay: 0.24s; }
 .hero--page .hero__logo { width: clamp(92px, 7.5vw, 116px); }
 .hero__title { margin-top: 1.3rem; }
 .hero__title .title { margin: 0; }
-.hero__title .title small { text-transform: uppercase; }
-.hero--page .hero__slide { opacity: 1; }
+.hero--page .hero__media { aspect-ratio: auto; }
+.hero--page .hero__slide { opacity: 1; position: relative; inset: auto; }
+.hero--page .hero__slide img { height: auto; object-fit: fill; }
+/* join / apply: no photo, the header melts into the page through the wavy layers of the next section */
+.hero--plain .hero__head { padding-bottom: clamp(20px, 4vw, 48px); } /* same cream as the first section: a seamless join, no line */
 .hero--page .hero__slide img { animation: heroSettle 2.6s var(--ease) both; }
 @keyframes heroSettle { from { transform: scale(1.05); } to { transform: scale(1.0); } }
 
 @media (max-width: 900px) {
   .hero__head { padding-top: 26px; }
-  /* mobile follows the mockup: rich blob top-left, blush blob on the right edge */
+  /* mobile follows the mockup: rich blob top-left */
   .hero__blob--tl .blob__deep { opacity: 0.9; }
   .hero__blob--tl .blob__line { opacity: 1; }
   .hero__blob--tl .blob__soft { fill: rgba(200, 147, 139, 0.28); }
   .hero__blob--tl { height: min(62%, 330px); }
   .hero__blob--tr { display: none; }
-  .hero__blob--r { display: block; height: min(30%, 200px); top: 28%; } /* beside the wordmark, clear of the quote */
   .hero__logo { width: 196px; }
   .hero--page .hero__logo { width: 92px; }
-  .hero__title .title small { font-size: 10px; letter-spacing: 0.26em; }
-}
-@media (max-width: 600px) {
-  /* phones: a slightly taller box so faces and the action stay in (83% of the width shows) */
-  .hero__media { aspect-ratio: 5 / 4; min-height: 0; }
 }
 
-/* home opening fits one screen: logo + quote on top, the photo fills what is left, so its wavy
-   bottom edge is always in view when the page opens (very short screens grow past it) */
-.hero:not(.hero--page) {
-  display: flex; flex-direction: column;
-  min-height: 100vh; min-height: 100svh;
-}
-.hero:not(.hero--page) .hero__head { flex: none; }
-.hero:not(.hero--page) .hero__media {
-  flex: 1 1 0; aspect-ratio: auto; height: auto; min-height: 230px;
-}
+/* home opening: logo, tagline and slogan in the cream head, then the whole 3:2 photo (taller than one screen on wide desktops) */
 @media (min-width: 901px) {
-  /* a slightly tighter head on computers so the photo keeps a generous height */
-  .hero:not(.hero--page) .hero__head { padding-top: clamp(22px, 3.5vh, 44px); }
+  .hero:not(.hero--page) .hero__head { padding-top: clamp(22px, 3.5vh, 44px); padding-bottom: clamp(18px, 3vw, 40px); }
   .hero:not(.hero--page) .hero__logo { width: clamp(150px, 13vw, 200px); }
-  .hero:not(.hero--page) .hero__quote .quote { font-size: clamp(22px, 2.2vw, 32px); }
-  /* wide, short screens: the photo never becomes a thin strip that cuts heads off;
-     it keeps at least ~2.2:1 and the page simply scrolls a little further */
-  .hero:not(.hero--page) .hero__media { min-height: min(45vw, 86vh); min-height: min(45vw, 86svh); }
 }
-
-@media (max-width: 900px) and (max-height: 720px) {
-  .hero:not(.hero--page) .hero__logo { width: 150px; }
-  .hero:not(.hero--page) .hero__head { padding-top: 16px; }
+@media (max-width: 900px) {
+  .hero:not(.hero--page) .hero__head { padding-bottom: 26px; }
 }
 
 /* ---------- waves (the banner's flowing edges) ---------- */
@@ -885,7 +859,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .hero--stacked .frame__foot, .hero--stacked .frame__foot + .frame__cream { display: none; }
 .hero--stacked .hero__media::after { display: none; }
 .stack {
-  --stack-ar: 2; /* width / height */
+  --stack-ar: 1.5; /* width / height (3:2 photos) */
   position: relative; z-index: 4;
   width: 100%; aspect-ratio: var(--stack-ar);
   margin-top: calc(-24% / var(--stack-ar)); /* same sweep as the header frame's top edge, lowest at 23.5% */
@@ -898,9 +872,6 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 .stack__ribbon { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .stack__band--light { fill: #c8938b; opacity: 0.85; }
 .split--solo { grid-template-columns: minmax(0, 46rem); justify-content: center; }
-@media (max-width: 900px) {
-  .stack { --stack-ar: 1.25; }
-}
 
 /* "not about the show": the photo runs right up under the pink frame (its top edge hides inside the
    wave bands, so there is no seam and no top fade) and the heading sits on the photo's dark top,
@@ -912,18 +883,13 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
   position: absolute; left: 0; right: 0; top: 0; z-index: 2;
   padding: calc(var(--lh) * 0.34 + clamp(6px, 0.8vw, 12px)) var(--gutter) 0;
 }
-.feature--full .feature__quote .eyebrow { color: #e9c9a6; }
 .feature--full .feature__quote .quote { color: #f6ece4; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
 .feature--full .feature__quote .quote em { color: #ecc79a; }
-.feature--full .feature__media img {
-  aspect-ratio: 6 / 5; object-position: 50% 0%;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 76%, transparent 100%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 76%, transparent 100%);
-}
+/* the whole photo shows (own proportions); on phones "not about the show" uses a taller crop so the quote
+   still sits above the face */
+.feature .pframe img { width: 100%; height: auto; aspect-ratio: var(--ar, auto); object-fit: fill; }
 @media (max-width: 900px) {
-  .feature--full .feature__media img { aspect-ratio: 1 / 2; object-position: 50% 0%;
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 82%, transparent 100%); }
+  .feature--full:not(.feature--wall) .feature__media .pframe img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 56% 0%; }
 }
 
 /* ---------- wavy photo frames (client: no faded photos) ----------
@@ -977,7 +943,8 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* Community (client): the pink waves under the choke photo join the photo, no cream gap.
    The waves are drawn over the photo's foot and lowered so its bottom edge (y≈97 of 200) always
    lies inside the bands at every width, like the "not just about the show" photo. */
-.stack__img.pframe { position: absolute; } /* the frame rule made it relative, so it stopped filling the stack */
+.stack__img.pframe { position: absolute; }
+.stack__img .hero__slide { top: 0; } /* the frame rule made it relative, so it stopped filling the stack */
 .stack + .section { z-index: 5; }
 .stack + .section + .section { z-index: 6; } /* the next section's wave still lies over it (no straight edge) */
 .footer { z-index: 7; } /* the footer is always last, so its sweep lies over whatever comes before it */
@@ -987,18 +954,25 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* client: no photos beside text - photos sit under the text, edge to edge, wavy top and bottom */
 .bleed { width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: 0; }
 .inset-photo.bleed { float: none; margin-top: clamp(28px, 4vw, 56px); margin-bottom: 0; shape-outside: none; }
-.inset-photo.bleed img { aspect-ratio: 3 / 2; }
-.split__media.bleed { aspect-ratio: 3 / 2; margin-top: clamp(28px, 4vw, 56px); }
+/* whole photos: each takes its own proportions (width/height written by build.js) */
+.inset-photo.bleed img, .split__media.bleed img { position: static; width: 100%; height: auto; aspect-ratio: var(--ar, auto); object-fit: fill; }
+.split__media.bleed { aspect-ratio: auto; margin-top: clamp(28px, 4vw, 56px); }
+/* client: photos ALWAYS run full width. A portrait (tall) photo can't be full width and whole at once
+   (it would be ~3 screens tall), so it is cut to a landscape band that keeps the faces in:
+   3:2 on computers, 4:5 on phones. A landscape photo dropped in instead shows whole. */
+.bleed img.is-portrait { aspect-ratio: 3 / 2 !important; object-fit: cover !important; object-position: 50% 30%; }
+@media (max-width: 900px) { .bleed img.is-portrait { aspect-ratio: 4 / 5 !important; } }
+.inset-photo.bleed img.is-portrait { object-position: 50% 28%; }   /* "That idea became Golden": the three faces */
+#who-is-golden-for .bleed img.is-portrait { object-position: 40% 26%; } /* her face and the Golden rash guard */
 @media (max-width: 900px) {
-  .inset-photo.bleed img, .split__media.bleed { aspect-ratio: 4 / 5; }
+  .split__media.bleed { aspect-ratio: auto; }
 }
 
-/* "the right environment" (client): same layout as "not just about the show" - the photo runs up
-   under the pink waves and the quote sits on the (light) wall above the athletes' heads */
+/* "the right environment": the quote is INSIDE the photo, in the show-quote style, on the wall to the right of
+   the first athlete's head (above the middle athlete's raised hand, left of the third athlete's hair).
+   Phones: the wall above the heads is too short for a quote this size without covering faces, so there it
+   stays on the paper above the photo (burgundy + gold). */
 .feature--full .wave--layers .layers__rose, .feature--full .wave--layers .layers__blush { opacity: 1; }
-/* client: the photo stays sharp, as shot (its wall is too short for the words), so the quote sits on
-   the paper just above it - burgundy + gold like the other quotes on paper - and the photo gets the
-   same wavy top and bottom frame as the other full-width photos */
 .feature--full.feature--wall .feature__media { top: 0; margin-bottom: 0; }
 .feature--full.feature--wall .feature__quote {
   position: relative; inset: auto;
@@ -1006,27 +980,14 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 }
 .feature--full.feature--wall .feature__quote .quote { color: var(--burgundy); text-shadow: none; }
 .feature--full.feature--wall .feature__quote .quote em { color: var(--gold); }
-.feature--full.feature--wall .feature__media img {
-  aspect-ratio: 3 / 2; object-position: 50% 50%;
-  -webkit-mask-image: none; mask-image: none;
-}
-@media (max-width: 900px) {
-  .feature--full.feature--wall .feature__media img { aspect-ratio: 3 / 2; object-position: 50% 50%; } /* all three athletes stay in */
-}
-/* client: on computers the quote sits IN the photo, small like the header quote ("Diamonds are created
-   under pressure"), white + gold, on one line in the strip of wall between the wavy top and the heads
-   (the frame covers ~5% of the height, the first head starts at ~10%) */
 @media (min-width: 901px) {
-  .feature--full.feature--wall .feature__quote {
-    position: absolute; left: 0; right: 0; top: 4.4%; z-index: 3;
-    padding: 0 var(--gutter);
-  }
-  .feature--full.feature--wall .feature__quote .quote {
-    max-width: none; font-size: clamp(22px, 2.6vw, 50px); line-height: 1.1;
-    color: #f6ece4; text-shadow: 0 2px 14px rgba(30, 12, 14, .6), 0 0 2px rgba(30, 12, 14, .4);
-  }
-  .feature--full.feature--wall .feature__quote .quote em { color: #ecc79a; }
   .feature--full.feature--wall .feature__media { margin-top: calc(var(--lh) * 0.3); }
+  .feature--full.feature--wall .feature__quote {
+    position: absolute; left: 51%; right: 17%; top: 6.5%; z-index: 3;
+    padding: 0;
+  }
+  .feature--full.feature--wall .feature__quote .quote { max-width: none; color: #f6ece4; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
+  .feature--full.feature--wall .feature__quote .quote em { color: #ecc79a; }
 }
 
 /* Eleftheria (client): no frame, soft fade on the sides and bottom, and on phones her photo starts
@@ -1064,3 +1025,7 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
     --pm-y: linear-gradient(180deg, transparent 0%, #000 6%, #000 66%, transparent 96%);
   }
 }
+
+/* community: the photo carousel in the middle of the page (full width, wavy top and bottom, whole 3:2 photos) */
+.mid-carousel { position: relative; aspect-ratio: 3 / 2; overflow: hidden; margin-top: clamp(28px, 4vw, 56px); margin-bottom: clamp(60px, 9vw, 120px); }
+.mid-carousel .hero__slide { top: 0; }

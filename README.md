@@ -5,7 +5,8 @@ Static site inspired by the scroll/fade layout of idoportal.com.
 - Edit text in `src/partials/*.html` and `src/pages/*.html`.
 - **Camp dates, contact details and the Google Form link** live in `src/data/site.json` — edit that file (even on github.com) and the site redeploys.
 - Build locally: `node build.js` → `dist/`.
-- Re-process photos (warm black-and-white tone, crops) and the logo: `python tools/process_images.py` (needs Pillow). Originals are in `assets/raw/`. Photos only: `--photos-only`.
+- **Photos** live in `src/photos/` (one folder per page, files named by spot). Swap a photo by replacing the file with another one of the same name; carousels (`.../carousel/`) take one slide per file, sorted by name. Read `src/photos/READ ME - which photo goes where.txt` first. `node build.js` checks the photos (missing/HEIC/duplicate/not 3:2) and writes their sizes and cache-busting `?v=` into the pages. On deploy, the GitHub Action shrinks the published copies (max 2400 px, no GPS/EXIF) with `tools/optimize_photos.py`; the originals are never changed.
+- Logo files only: `python tools/process_images.py --logo assets/raw/logo.png` (needs Pillow). It no longer touches photos.
 
 ## Swapping the logo
 1. Put the new logo at `assets/raw/logo.png` (a transparent PNG is best; a JPG on white also works). Optionally add `assets/raw/logo-light.png` for dark backgrounds; otherwise one is made by recolouring the dark wine wordmark to gold.

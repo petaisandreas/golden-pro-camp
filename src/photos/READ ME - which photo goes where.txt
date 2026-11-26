@@ -1,0 +1,89 @@
+GOLDEN - WHICH PHOTO GOES WHERE
+================================
+
+This folder holds every photo on the website. To change a photo, put your new
+picture into the right folder with the SAME file name as the old one (or, in a
+"carousel" folder, add / remove files - see below).
+
+THE RULES (please read)
+-----------------------
+1. Each photo may be used ONLY ONCE on the whole site. Do not put the same
+   picture (or a near-identical one from the same moment) in two places.
+2. No photos of little girls.
+3. Save photos as JPG (or PNG / WebP). iPhone "HEIC" files do NOT work: open the
+   photo and "Save as JPG" / export as JPEG first. The website refuses to build
+   while a HEIC file is in this folder.
+4. Keep every file under about 5 MB. (Big camera files are shrunk automatically
+   when the site is published, but small files make editing easier.)
+5. The file name must match the spot name below. Capital letters do not matter,
+   and .jpg / .jpeg / .png / .webp are all fine.
+6. Swapping a file on your computer does NOT change the live website. The new
+   photo only goes live when it is published: ask Claude to "publish the
+   photos". Please do NOT upload photos straight to github.com: phone and
+   camera photos carry hidden data (like the GPS location where they were
+   taken), and anything uploaded there is public at once. Publishing through
+   Claude removes that hidden data first.
+
+THE SHAPE OF A PHOTO
+--------------------
+Photos are always shown WHOLE, not cropped, so the best photo is landscape
+(wider than tall). Portrait photos also work in the single spots below, but they
+are shown narrower on computers.
+
+CAROUSELS (photos that fade into each other: 3:2 landscape please)
+------------------------------------------------------------------
+A carousel shows every photo in its folder, one after the other, in the order
+of the file names. So name them 01 - ..., 02 - ..., 03 - ... The words after the
+number are used as the picture description for blind visitors, so describe what
+is in the photo, e.g.  "05 - two athletes smiling after a round.jpg".
+Best shape: 3:2 landscape (like a normal camera photo). A photo that is much
+taller or wider than that gets cropped and the build prints a warning.
+On the HOME carousel a quote is written ACROSS THE TOP of the photo, so choose
+photos with empty space at the top (a wall or ceiling) and no faces in the top
+fifth. Put a new photo in by adding a file; remove one by deleting its file.
+A carousel with only one photo stays still.
+
+EVERY PHOTO ON THE SITE
+-----------------------
+
+HOME PAGE
+  home/carousel/01 - two athletes drilling head to head.jpg
+      Home page, the big carousel at the top (slide 1). Landscape 3:2.
+  home/carousel/02 - athletes rolling on the mats black and white.jpg
+      Home page, carousel slide 2. Landscape 3:2.
+  home/carousel/03 - athlete drilling black and white.jpg
+      Home page, carousel slide 3. This one is PORTRAIT (tall), so the website
+      cuts out the middle of it. Please replace it with a landscape photo.
+  home/carousel/04 - choke close-up black and white.jpg
+      Home page, carousel slide 4. Landscape 3:2.
+  home/eleftheria.jpg
+      Home page, "Eleftheria Christodoulou" section: her portrait, faded into
+      the page (portrait, tall). No frame.
+  home/environment.jpg
+      Home page, "The right environment can change what an athlete believes is
+      possible" - full width photo with the quote written on the wall at the
+      top right. Landscape. Keep the wall free of faces on the right half.
+  home/not-just-the-show.jpg
+      Home page, "It's not just about the show" - full width photo with the
+      quote across the top. Landscape, with empty space at the top.
+  home/that-idea-became-golden.jpg
+      Home page, under the words "That idea became Golden." Portrait photo,
+      shown whole.
+
+COMMUNITY PAGE (The Golden Community)
+  community/header.jpg
+      Community page, the big group photo under the title. Landscape.
+  community/carousel/01 - eleftheria teaching.jpg
+      Community page, the carousel right under the group photo. Landscape 3:2.
+      Add more photos here (02 - ..., 03 - ...) and they will fade into each
+      other automatically.
+  community/who-is-golden-for.jpg
+      Community page, under "Who is Golden for?". Portrait photo, shown whole.
+
+JOIN PAGE and APPLY PAGE
+  These pages have no photos (apart from the Athena drawing, which is not a
+  photo and lives elsewhere).
+
+NOT PHOTOS (leave these alone)
+  The logo, the Athena drawing, the icons and the fonts are in src/assets and
+  are not changed from this folder.

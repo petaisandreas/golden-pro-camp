@@ -78,15 +78,14 @@
   // tells the safety net in early.js that hidden content will be revealed
   window.goldenReady = true;
 
-  // ---- hero slideshow: crossfade to the next photo every few seconds ----
-  const SLIDE_MS = 5000;
-  const slides = Array.from(document.querySelectorAll(".hero:not(.hero--page) .hero__slide"));
-  if (slides.length > 1) {
-    // the quotes in the hero head change every second photo
-    const quotes = Array.from(document.querySelectorAll(".hero__quote"));
-
+  // ---- carousels (home hero, community photo): crossfade to the next photo every few seconds ----
+  // A carousel with a single photo stays still. Quotes in the hero change every second photo.
+  const SLIDE_MS = 8000;
+  document.querySelectorAll("[data-carousel]").forEach((box) => {
+    const slides = Array.from(box.querySelectorAll(".hero__slide"));
+    if (slides.length < 2) return;
+    const quotes = Array.from(box.querySelectorAll(".hero__quote"));
     let current = 0;
-    let timer;
     function show(i) {
       current = (i + slides.length) % slides.length;
       slides.forEach((s, n) => s.classList.toggle("is-active", n === current));
@@ -99,12 +98,11 @@
       }
     }
     show(0);
-    timer = setInterval(() => show(current + 1), SLIDE_MS);
-  }
+    setInterval(() => show(current + 1), SLIDE_MS);
+  });
 
-  // ---- scroll-linked motion: hero photos drift back, head text fades away, photos glide with the words ----
+  // ---- scroll-linked motion: head text fades away, photos glide with the words ----
   const hero = document.querySelector(".hero");
-  const heroSlides = hero ? hero.querySelectorAll(".hero__slide") : [];
   const heroText = hero ? hero.querySelectorAll(".hero__head > :not(.hero__deco)") : [];
   const parallax = Array.from(document.querySelectorAll("[data-parallax]"));
   let ticking = false;
@@ -120,7 +118,6 @@
     if (!reduceMotion) {
       if (hero && y < hero.offsetHeight + vh) {
         const p = Math.min(y / vh, 1);
-        heroSlides.forEach((s) => { s.style.transform = `translate3d(0, ${(y * 0.12).toFixed(1)}px, 0)`; });
         heroText.forEach((t) => { t.style.opacity = String(Math.max(0, 1 - p * 1.3)); });
       }
       for (const el of parallax) {

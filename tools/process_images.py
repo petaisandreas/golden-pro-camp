@@ -1,8 +1,9 @@
-"""Prepare site images from assets/raw into src/assets/img.
+"""Prepare the LOGO files from assets/raw into src/assets/img (logo, logo-light, emblem, favicons).
 
-Photos get the warm sepia duotone used on the Golden banners.
-Run from the repo root:  python tools/process_images.py
-  --photos-only            only re-tone the photos
+This tool no longer touches photos: the site photos live in src/photos and are never overwritten
+by any script. See "src/photos/READ ME - which photo goes where.txt".
+
+Run from the repo root:  python tools/process_images.py --logo assets/raw/logo.png
   --logo PATH              logo source (transparent PNG, or a JPG on white)
   --logo-light PATH        optional ready-made light logo for dark backgrounds
   --emblem-cut FRACTION    fallback emblem height if the logo has no gap
@@ -15,129 +16,6 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "assets" / "raw"
 OUT = ROOT / "src" / "assets" / "img"
 OUT.mkdir(parents=True, exist_ok=True)
-
-# warm, nearly neutral black-and-white (mockup samples #0a0907 / #3e342b / #aa998f)
-DARK = (14, 11, 10)
-MID = (118, 104, 94)
-LIGHT = (240, 231, 223)
-
-# output name -> (raw file, crop box as fractions (l, t, r, b) or None, max width[, keep colour])
-# keep colour = True: the client's own photos go on the site exactly as she sent them (no tone)
-E = "email-2026-11-20/"
-PHOTOS = {
-    "hero-2": (E + "02-eleftheria-teaching.jpg", None, 2400, True),
-    "hero-3": (E + "07-drilling-colour.jpg", None, 2400, True),
-    "hero-4": (E + "10-bw-circle-from-above.jpg", None, 2400, True),
-    "environment-clear": ("ig-18.jpg", None, 2000, True),  # sharp, as shot (client: no blurred wall)
-    "show": (E + "09-athlete-listening-warm.jpg", None, 2000, True),
-    "show-detail": (E + "05-athletes-sitting-portrait.jpg", None, 1100, True),
-    "community": (E + "03-athlete-listening-portrait.jpg", None, 1300, True),
-    "community-joy": (E + "06-group-photo-hall.jpg", None, 2400, True),
-    "community-stack": (E + "12-bw-choke-closeup.jpg", None, 2400, True),
-    "what-is-golden": (E + "04-group-photo-medal-wall.jpg", None, 2000, True),
-    "join": (E + "08-bw-rolling.jpg", None, 2400, True),
-    "apply-hero": (E + "01-bw-drilling-portrait.jpg", None, 1600, True),
-    "eleftheria-top": ("ig-eleftheria.jpg", (0.42, 0.07, 0.985, 1.0), 1200),
-}
-
-
-def clean_eleftheria_poster(im: Image.Image) -> Image.Image:
-    """Paint over the poster lettering left of her hair with the background
-    colour sampled from the clean strip between the text and the hair."""
-    w, h = im.size
-    s = w / 1440
-    x0, x1, sample_x, y_end = int(600 * s), int(858 * s), int(866 * s), int(700 * s)
-    px = im.load()
-    for y in range(y_end):
-        c = px[sample_x, y]
-        for x in range(x0, x1):
-            px[x, y] = c
-    # soften the painted block so it reads as a glow, not a band
-    box = (x0, 0, x1 + int(10 * s), y_end + int(20 * s))
-    im.paste(im.crop(box).filter(ImageFilter.GaussianBlur(14 * s)), box[:2])
-    return im
-
-
-def trim_white_border(im: Image.Image) -> Image.Image:
-    """Some Instagram exports are letterboxed on white; cut that frame off."""
-    g = ImageOps.grayscale(im).point(lambda v: 255 if v < 235 else 0)
-    bbox = g.getbbox()
-    if not bbox:
-        return im
-    l, t, r, b = bbox
-    inset = 6  # skip anti-aliased edge pixels
-    return im.crop((l + inset, t + inset, r - inset, b - inset))
-
-
-def sepia(im: Image.Image) -> Image.Image:
-    g = ImageOps.grayscale(im)
-    g = ImageOps.autocontrast(g, cutoff=0.5)
-    g = g.point(lambda v: int(v * 0.94 + 6))  # highlights land on paper, not white
-    return ImageOps.colorize(g, black=DARK, mid=MID, white=LIGHT)
-
-
-def add_headroom(im: Image.Image, frac: float = 0.16) -> Image.Image:
-    """Her hair touches the top of the poster crop; extend the plain backdrop upward so the
-    page's soft top fade lands on empty background instead of her head."""
-    w, h = im.size
-    pad = int(h * frac)
-    strip = im.crop((0, 0, w, 12)).resize((w, 1), Image.BOX)  # backdrop colour per column
-    top = strip.resize((w, pad), Image.BICUBIC).filter(ImageFilter.GaussianBlur(24))
-    out = Image.new("RGB", (w, h + pad))
-    out.paste(top, (0, 0))
-    out.paste(im, (0, pad))
-    # soften the join so no seam shows
-    band = out.crop((0, pad - 30, w, pad + 30)).filter(ImageFilter.GaussianBlur(10))
-    out.paste(band, (0, pad - 30))
-    return out
-
-
-def extend_wall(im: Image.Image, band: int = 260, pad: int = 1300) -> Image.Image:
-    """The quote sits on the photo above the athletes' heads, but the wall above them is short:
-    continue the (already soft) wall upward by mirroring its top strip, blurred so it reads as
-    out-of-focus wall, and soften the join."""
-    w, h = im.size
-    src = im.crop((0, 0, w, band))
-    flip = ImageOps.flip(src)
-    top = Image.new("RGB", (w, pad))
-    y, k = pad, 0
-    while y > 0:
-        y -= band
-        top.paste(flip if k % 2 == 0 else src, (0, y))
-        k += 1
-    top = top.filter(ImageFilter.GaussianBlur(18))
-    out = Image.new("RGB", (w, h + pad))
-    out.paste(top, (0, 0))
-    out.paste(im, (0, pad))
-    # long, eased hand-over from the blurred wall to the sharp photo (stops above the hair at ~y=230)
-    a, b = pad - 260, pad + 220
-    soft = out.crop((0, a, w, b)).filter(ImageFilter.GaussianBlur(18))
-    n = b - a
-    ease = [round(255 * (1 - (3 * t * t - 2 * t ** 3))) for t in (i / (n - 1) for i in range(n))]
-    mask = Image.new("L", (1, n))
-    mask.putdata(ease)
-    out.paste(soft, (0, a), mask.resize((w, n)))
-    return out
-
-
-def process_photos():
-    for name, (src, crop, max_w, *keep) in PHOTOS.items():
-        im = Image.open(RAW / src).convert("RGB")
-        if name == "eleftheria-top":
-            im = clean_eleftheria_poster(im)
-        else:
-            im = trim_white_border(im)
-        if name == "environment-soft":
-            im = extend_wall(im)
-        if crop:
-            w, h = im.size
-            im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
-        if im.width > max_w:
-            im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
-        out = im if keep and keep[0] else sepia(im)
-        out.save(OUT / f"{name}.jpg", quality=80, optimize=True, progressive=True)
-        print("photo", name, im.size)
-
 
 MAX_LOGO_W = 800
 GOLD_ON_DARK = (236, 211, 171)  # --gold-3
@@ -240,14 +118,9 @@ def default_light(logo: Path) -> Path | None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--photos-only", action="store_true")
-    ap.add_argument("--logo", type=Path, help="logo source; skips photos unless --with-photos")
+    ap.add_argument("--logo", type=Path, help="logo source (default: assets/raw/logo.png)")
     ap.add_argument("--logo-light", type=Path)
     ap.add_argument("--emblem-cut", type=float)
-    ap.add_argument("--with-photos", action="store_true")
     args = ap.parse_args()
-    if not args.logo or args.with_photos or args.photos_only:
-        process_photos()
-    if not args.photos_only:
-        logo = args.logo or default_logo()
-        process_logo(logo, args.logo_light or default_light(logo), args.emblem_cut)
+    logo = args.logo or default_logo()
+    process_logo(logo, args.logo_light or default_light(logo), args.emblem_cut)
