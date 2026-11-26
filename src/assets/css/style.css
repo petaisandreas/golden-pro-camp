@@ -1029,3 +1029,6 @@ main:has(> .cta:last-child) + .footer .sweep__haze { fill: url(#g-sweep-rose-dim
 /* community: the photo carousel in the middle of the page (full width, wavy top and bottom, whole 3:2 photos) */
 .mid-carousel { position: relative; aspect-ratio: 3 / 2; overflow: hidden; margin-top: clamp(28px, 4vw, 56px); margin-bottom: clamp(60px, 9vw, 120px); }
 .mid-carousel .hero__slide { top: 0; }
+/* "Competition is what people see" runs as one centred block of text */
+.show-text { max-width: 46rem; margin-left: auto; margin-right: auto; }
+.show-text .headline { margin-bottom: 1.2rem; }
